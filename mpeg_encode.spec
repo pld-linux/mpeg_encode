@@ -1,15 +1,16 @@
 Summary:	Berkeley MPEG-1 Video Encoder
-Group:		Applications/Graphics
-Group(de):	Applikationen/Grafik
-Group(pl):	Aplikacje/Grafika
-Group(pt):	Aplicações/Gráficos
+Summary(pl):	Koder obrazu MPEG-1 z Berkeley
 Name:		mpeg_encode
 Version:	1.5b
 Release:	1
 License:	BSD
-URL:		http://bmrc.berkeley.edu/frame/research/mpeg/mpeg_encode.html
+Group:		Applications/Graphics
+Group(de):	Applikationen/Grafik
+Group(pl):	Aplikacje/Grafika
+Group(pt):	Aplicações/Gráficos
 Source0:	ftp://mm-ftp.cs.berkeley.edu/pub/multimedia/mpeg/encode/%{name}-%{version}-src.tar.gz
 Patch0:		ftp://mm-ftp.cs.berkeley.edu/pub/multimedia/mpeg/encode/encode.patch
+URL:		http://bmrc.berkeley.edu/frame/research/mpeg/mpeg_encode.html
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -21,6 +22,15 @@ are specified in a parameter file. Very little error processing is
 done when reading this file. We suggest you start with the sample
 parameter file examples/template.param and modify it. See also
 examples/default.param.
+
+%description -l pl
+Ten koder akceptuje dowolny format wej¶ciowy dla którego dostarczysz
+skrypt konwertuj±cy ramki na PPM, YUV, JPEG lub JMOVIE. Obróbka pliku
+wej¶ciowego opisana jest w pliku doc/INPUT.FORMAT. Opcje kontroluj±ce
+obróbkê pliku wej¶ciowego i parametry kompresji s± w pliku parametrów.
+Przy czytaniu tego pliku obs³uga b³êdów jest niewielka. Autorzy
+sugeruj± by zaczynaæ od przyk³adowego pliku examples/template.param i
+modyfikowaæ go. Patrz tak¿e examples/default.param.
 
 %prep
 %setup -q -n %{name}-%{version}
