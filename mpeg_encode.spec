@@ -6,6 +6,7 @@ Release:	1
 License:	BSD
 Group:		Applications/Graphics
 Source0:	ftp://mm-ftp.cs.berkeley.edu/pub/multimedia/mpeg/encode/%{name}-%{version}-src.tar.gz
+# Source0-md5:	ff125fb82118efc7c852f0d26d5552c6
 Patch0:		mpeg_encode-strerror.patch
 Patch1:		mpeg_encode-install.patch
 Patch2:		mpeg_encode-link_jpeg.patch
