@@ -5,9 +5,6 @@ Version:	1.5b
 Release:	1
 License:	BSD
 Group:		Applications/Graphics
-Group(de):	Applikationen/Grafik
-Group(pl):	Aplikacje/Grafika
-Group(pt):	Aplicações/Gráficos
 Source0:	ftp://mm-ftp.cs.berkeley.edu/pub/multimedia/mpeg/encode/%{name}-%{version}-src.tar.gz
 Patch0:		ftp://mm-ftp.cs.berkeley.edu/pub/multimedia/mpeg/encode/encode.patch
 URL:		http://bmrc.berkeley.edu/frame/research/mpeg/mpeg_encode.html
