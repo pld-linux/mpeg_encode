@@ -35,7 +35,7 @@ modyfikowaæ go. Patrz tak¿e examples/default.param.
 
 %build
 ./configure
-%{__make} 
+%{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
