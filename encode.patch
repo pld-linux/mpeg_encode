@@ -1,0 +1,3437 @@
+diff -c mpeg_encode/BUGS ../bmt1r2/mpeg_encode/BUGS
+*** mpeg_encode/BUGS	Thu Oct 26 17:16:38 1995
+--- ../bmt1r2/mpeg_encode/BUGS	Wed Aug 16 10:59:00 1995
+***************
+*** 41,49 ****
+  case reported by a user it was needed.
+  
+  14. Parallel encoding often generates improper temporal_ref's...
+- 
+- 15. <fixed>
+- 
+  Reporting bugs:
+      If you find any bugs in this software, please send them to
+      mpeg-bugs@plateau.cs.berkeley.edu.  Since this software
+--- 41,46 ----
+***************
+*** 56,58 ****
+--- 53,62 ----
+  	2) the data file that caused the bug (if possible)
+  	3) the OS version and machine type you ran the program on
+  	4) the compiler used to compile the program
++ 
++ 
++ 
++ 
++ 
++ 
++ 
+diff -c mpeg_encode/CHANGES ../bmt1r2/mpeg_encode/CHANGES
+*** mpeg_encode/CHANGES	Tue Nov 28 18:00:45 1995
+--- ../bmt1r2/mpeg_encode/CHANGES	Fri Aug 11 14:34:45 1995
+***************
+*** 1,12 ****
+  Changes chronology
+  ------------------
+- 1.5c Release   ???
+-         - Added error printing to jpeg.c for non 16X JPGs
+-         - JPEG-6
+- 	- supports BASE type SIGNED_YUV for signed U and V.
+-         - no longer requires absolute pathnames for parallel execution
+-         - bug fix in BlockComputeSNR
+- 
+  1.5b Release	August 1995
+  	- added date to default USER_DATA string
+  	- made prototypes happier
+--- 1,5 ----
+diff -c mpeg_encode/Makefile ../bmt1r2/mpeg_encode/Makefile
+*** mpeg_encode/Makefile	Tue Nov 28 17:43:20 1995
+--- ../bmt1r2/mpeg_encode/Makefile	Wed Aug 16 15:16:56 1995
+***************
+*** 108,114 ****
+  #CFLAGS = $(INCLUDEDIR) $(DEBUGFLAG) $(PROFLAG) $(PROTOFLAG) -DNON_ANSI_COMPILER
+  
+  #	HP gcc
+! CFLAGS = $(INCLUDEDIR) $(DEBUGFLAG) $(PROFLAG)
+  
+  #	DEC ALPHA cc
+  #CFLAGS = $(INCLUDEDIR) -Olimit 1200 $(DEBUGFLAG) $(PROFLAG) $(PROTOFLAG)
+--- 108,114 ----
+  #CFLAGS = $(INCLUDEDIR) $(DEBUGFLAG) $(PROFLAG) $(PROTOFLAG) -DNON_ANSI_COMPILER
+  
+  #	HP gcc
+! #CFLAGS = $(INCLUDEDIR) $(DEBUGFLAG) $(PROFLAG)
+  
+  #	DEC ALPHA cc
+  #CFLAGS = $(INCLUDEDIR) -Olimit 1200 $(DEBUGFLAG) $(PROFLAG) $(PROTOFLAG)
+***************
+*** 171,178 ****
+  MP_OTHER_SRCS = mpeg.c subsample.c param.c rgbtoycc.c \
+  	readframe.c combine.c jrevdct.c frame.c fsize.c frametype.c \
+  	libpnmrw.c specifics.c rate.c opts.c
+! MP_PARALLEL_OBJS = noparallel.o
+! MP_PARALLEL_SRCS = noparallel.c
+  MP_ALL_SRCS = $(MP_BASE_SRCS) $(MP_OTHER_SRCS) $(MP_ENCODE_SRCS) \
+  	      $(MP_PARALLEL_SRCS) $(MP_JPEG_SRCS) main.c
+  MP_ALL_OBJS = $(MP_BASE_OBJS) $(MP_OTHER_OBJS) $(MP_ENCODE_OBJS) \
+--- 171,178 ----
+  MP_OTHER_SRCS = mpeg.c subsample.c param.c rgbtoycc.c \
+  	readframe.c combine.c jrevdct.c frame.c fsize.c frametype.c \
+  	libpnmrw.c specifics.c rate.c opts.c
+! MP_PARALLEL_OBJS = parallel.o
+! MP_PARALLEL_SRCS = parallel.c
+  MP_ALL_SRCS = $(MP_BASE_SRCS) $(MP_OTHER_SRCS) $(MP_ENCODE_SRCS) \
+  	      $(MP_PARALLEL_SRCS) $(MP_JPEG_SRCS) main.c
+  MP_ALL_OBJS = $(MP_BASE_OBJS) $(MP_OTHER_OBJS) $(MP_ENCODE_OBJS) \
+***************
+*** 263,479 ****
+  
+  ##############################################################################
+  # DO NOT DELETE THIS LINE -- make depend depends on it.
+- 
+- mfwddct.o: headers/all.h /usr/include/stdio.h /usr/include/sys/stdsyms.h
+- mfwddct.o: /usr/include/stdlib.h /usr/include/math.h /usr/include/memory.h
+- mfwddct.o: /usr/include/string.h /usr/include/limits.h headers/libpnmrw.h
+- mfwddct.o: /usr/include/malloc.h /usr/include/sys/types.h headers/ansi.h
+- mfwddct.o: headers/general.h headers/dct.h headers/mtypes.h headers/opts.h
+- postdct.o: /usr/include/assert.h /usr/include/sys/stdsyms.h headers/all.h
+- postdct.o: /usr/include/stdio.h /usr/include/stdlib.h /usr/include/math.h
+- postdct.o: /usr/include/memory.h /usr/include/string.h /usr/include/limits.h
+- postdct.o: headers/libpnmrw.h /usr/include/malloc.h /usr/include/sys/types.h
+- postdct.o: headers/ansi.h headers/general.h headers/mtypes.h headers/dct.h
+- postdct.o: headers/bitio.h huff.h headers/postdct.h headers/opts.h
+- huff.o: headers/mtypes.h headers/general.h headers/dct.h headers/ansi.h
+- huff.o: huff.h
+- bitio.o: /usr/include/assert.h /usr/include/sys/stdsyms.h headers/all.h
+- bitio.o: /usr/include/stdio.h /usr/include/stdlib.h /usr/include/math.h
+- bitio.o: /usr/include/memory.h /usr/include/string.h /usr/include/limits.h
+- bitio.o: headers/libpnmrw.h /usr/include/malloc.h /usr/include/sys/types.h
+- bitio.o: headers/ansi.h headers/general.h headers/byteorder.h
+- bitio.o: /usr/include/netinet/in.h headers/bitio.h headers/mtypes.h
+- bitio.o: headers/dct.h
+- mheaders.o: headers/all.h /usr/include/stdio.h /usr/include/sys/stdsyms.h
+- mheaders.o: /usr/include/stdlib.h /usr/include/math.h /usr/include/memory.h
+- mheaders.o: /usr/include/string.h /usr/include/limits.h headers/libpnmrw.h
+- mheaders.o: /usr/include/malloc.h /usr/include/sys/types.h headers/ansi.h
+- mheaders.o: headers/general.h headers/bitio.h headers/frames.h
+- mheaders.o: headers/mtypes.h headers/dct.h headers/mheaders.h headers/frame.h
+- mpeg.o: headers/all.h /usr/include/stdio.h /usr/include/sys/stdsyms.h
+- mpeg.o: /usr/include/stdlib.h /usr/include/math.h /usr/include/memory.h
+- mpeg.o: /usr/include/string.h /usr/include/limits.h headers/libpnmrw.h
+- mpeg.o: /usr/include/malloc.h /usr/include/sys/types.h headers/ansi.h
+- mpeg.o: headers/general.h /usr/include/time.h /usr/include/sys/time.h
+- mpeg.o: /usr/include/errno.h /usr/include/sys/errno.h /usr/include/unistd.h
+- mpeg.o: /usr/include/sys/unistd.h headers/mtypes.h headers/dct.h
+- mpeg.o: headers/frames.h headers/mheaders.h headers/bitio.h headers/frame.h
+- mpeg.o: headers/search.h headers/mpeg.h headers/prototypes.h
+- mpeg.o: headers/parallel.h headers/param.h headers/readframe.h
+- mpeg.o: headers/fsize.h headers/rate.h /usr/include/sys/stat.h
+- subsample.o: headers/all.h /usr/include/stdio.h /usr/include/sys/stdsyms.h
+- subsample.o: /usr/include/stdlib.h /usr/include/math.h /usr/include/memory.h
+- subsample.o: /usr/include/string.h /usr/include/limits.h headers/libpnmrw.h
+- subsample.o: /usr/include/malloc.h /usr/include/sys/types.h headers/ansi.h
+- subsample.o: headers/general.h headers/mtypes.h headers/dct.h
+- subsample.o: headers/frames.h headers/mheaders.h headers/bitio.h
+- subsample.o: headers/frame.h headers/prototypes.h
+- param.o: headers/all.h /usr/include/stdio.h /usr/include/sys/stdsyms.h
+- param.o: /usr/include/stdlib.h /usr/include/math.h /usr/include/memory.h
+- param.o: /usr/include/string.h /usr/include/limits.h headers/libpnmrw.h
+- param.o: /usr/include/malloc.h /usr/include/sys/types.h headers/ansi.h
+- param.o: headers/general.h headers/mtypes.h headers/dct.h headers/mpeg.h
+- param.o: headers/frame.h headers/search.h headers/prototypes.h
+- param.o: headers/parallel.h headers/bitio.h headers/param.h
+- param.o: headers/readframe.h headers/fsize.h headers/frames.h
+- param.o: headers/mheaders.h headers/jpeg.h /usr/include/ctype.h
+- param.o: headers/rate.h headers/opts.h
+- rgbtoycc.o: headers/all.h /usr/include/stdio.h /usr/include/sys/stdsyms.h
+- rgbtoycc.o: /usr/include/stdlib.h /usr/include/math.h /usr/include/memory.h
+- rgbtoycc.o: /usr/include/string.h /usr/include/limits.h headers/libpnmrw.h
+- rgbtoycc.o: /usr/include/malloc.h /usr/include/sys/types.h headers/ansi.h
+- rgbtoycc.o: headers/general.h headers/frame.h headers/mtypes.h headers/dct.h
+- rgbtoycc.o: headers/fsize.h headers/rgbtoycc.h
+- readframe.o: headers/all.h /usr/include/stdio.h /usr/include/sys/stdsyms.h
+- readframe.o: /usr/include/stdlib.h /usr/include/math.h /usr/include/memory.h
+- readframe.o: /usr/include/string.h /usr/include/limits.h headers/libpnmrw.h
+- readframe.o: /usr/include/malloc.h /usr/include/sys/types.h headers/ansi.h
+- readframe.o: headers/general.h /usr/include/time.h /usr/include/sys/time.h
+- readframe.o: /usr/include/errno.h /usr/include/sys/errno.h
+- readframe.o: /usr/include/ctype.h /usr/include/unistd.h
+- readframe.o: /usr/include/sys/unistd.h headers/mtypes.h headers/dct.h
+- readframe.o: headers/frames.h headers/mheaders.h headers/bitio.h
+- readframe.o: headers/frame.h headers/prototypes.h headers/parallel.h
+- readframe.o: headers/param.h headers/readframe.h headers/fsize.h
+- readframe.o: headers/rgbtoycc.h headers/jpeg.h headers/opts.h
+- combine.o: headers/all.h /usr/include/stdio.h /usr/include/sys/stdsyms.h
+- combine.o: /usr/include/stdlib.h /usr/include/math.h /usr/include/memory.h
+- combine.o: /usr/include/string.h /usr/include/limits.h headers/libpnmrw.h
+- combine.o: /usr/include/malloc.h /usr/include/sys/types.h headers/ansi.h
+- combine.o: headers/general.h /usr/include/time.h /usr/include/sys/time.h
+- combine.o: /usr/include/errno.h /usr/include/sys/errno.h headers/mtypes.h
+- combine.o: headers/dct.h headers/frames.h headers/mheaders.h headers/bitio.h
+- combine.o: headers/frame.h headers/search.h headers/mpeg.h
+- combine.o: headers/prototypes.h headers/parallel.h headers/param.h
+- combine.o: headers/readframe.h headers/fsize.h headers/combine.h
+- combine.o: /usr/include/unistd.h /usr/include/sys/unistd.h
+- jrevdct.o: /usr/include/memory.h /usr/include/string.h headers/all.h
+- jrevdct.o: /usr/include/stdio.h /usr/include/sys/stdsyms.h
+- jrevdct.o: /usr/include/stdlib.h /usr/include/math.h /usr/include/limits.h
+- jrevdct.o: headers/libpnmrw.h /usr/include/malloc.h /usr/include/sys/types.h
+- jrevdct.o: headers/ansi.h headers/general.h headers/dct.h
+- frame.o: headers/all.h /usr/include/stdio.h /usr/include/sys/stdsyms.h
+- frame.o: /usr/include/stdlib.h /usr/include/math.h /usr/include/memory.h
+- frame.o: /usr/include/string.h /usr/include/limits.h headers/libpnmrw.h
+- frame.o: /usr/include/malloc.h /usr/include/sys/types.h headers/ansi.h
+- frame.o: headers/general.h headers/mtypes.h headers/dct.h headers/frames.h
+- frame.o: headers/mheaders.h headers/bitio.h headers/frame.h headers/fsize.h
+- fsize.o: headers/all.h /usr/include/stdio.h /usr/include/sys/stdsyms.h
+- fsize.o: /usr/include/stdlib.h /usr/include/math.h /usr/include/memory.h
+- fsize.o: /usr/include/string.h /usr/include/limits.h headers/libpnmrw.h
+- fsize.o: /usr/include/malloc.h /usr/include/sys/types.h headers/ansi.h
+- fsize.o: headers/general.h headers/fsize.h headers/dct.h
+- frametype.o: headers/all.h /usr/include/stdio.h /usr/include/sys/stdsyms.h
+- frametype.o: /usr/include/stdlib.h /usr/include/math.h /usr/include/memory.h
+- frametype.o: /usr/include/string.h /usr/include/limits.h headers/libpnmrw.h
+- frametype.o: /usr/include/malloc.h /usr/include/sys/types.h headers/ansi.h
+- frametype.o: headers/general.h headers/prototypes.h headers/frame.h
+- frametype.o: headers/mtypes.h headers/dct.h headers/frames.h
+- frametype.o: headers/mheaders.h headers/bitio.h headers/param.h
+- libpnmrw.o: /usr/include/stdio.h /usr/include/sys/stdsyms.h
+- libpnmrw.o: headers/libpnmrw.h /usr/include/malloc.h /usr/include/sys/types.h
+- libpnmrw.o: /usr/include/string.h
+- specifics.o: headers/all.h /usr/include/stdio.h /usr/include/sys/stdsyms.h
+- specifics.o: /usr/include/stdlib.h /usr/include/math.h /usr/include/memory.h
+- specifics.o: /usr/include/string.h /usr/include/limits.h headers/libpnmrw.h
+- specifics.o: /usr/include/malloc.h /usr/include/sys/types.h headers/ansi.h
+- specifics.o: headers/general.h headers/mtypes.h headers/dct.h
+- specifics.o: headers/frames.h headers/mheaders.h headers/bitio.h
+- specifics.o: headers/frame.h headers/fsize.h headers/specifics.h
+- specifics.o: headers/prototypes.h
+- rate.o: /usr/include/sys/times.h /usr/include/sys/stdsyms.h headers/all.h
+- rate.o: /usr/include/stdio.h /usr/include/stdlib.h /usr/include/math.h
+- rate.o: /usr/include/memory.h /usr/include/string.h /usr/include/limits.h
+- rate.o: headers/libpnmrw.h /usr/include/malloc.h /usr/include/sys/types.h
+- rate.o: headers/ansi.h headers/general.h headers/mtypes.h headers/dct.h
+- rate.o: headers/bitio.h headers/frames.h headers/mheaders.h headers/frame.h
+- rate.o: headers/prototypes.h headers/param.h headers/fsize.h
+- rate.o: headers/postdct.h headers/mpeg.h headers/parallel.h headers/rate.h
+- opts.o: /usr/include/stdio.h /usr/include/sys/stdsyms.h /usr/include/string.h
+- opts.o: headers/opts.h headers/general.h headers/ansi.h headers/mtypes.h
+- opts.o: headers/dct.h /usr/include/malloc.h /usr/include/sys/types.h
+- opts.o: /usr/include/math.h
+- iframe.o: /usr/include/sys/times.h /usr/include/sys/stdsyms.h
+- iframe.o: /usr/include/sys/param.h /usr/include/sys/types.h
+- iframe.o: /usr/include/machine/param.h /usr/include/sys/sysmacros.h
+- iframe.o: /usr/include/sys/time.h /usr/include/machine/spl.h headers/all.h
+- iframe.o: /usr/include/stdio.h /usr/include/stdlib.h /usr/include/math.h
+- iframe.o: /usr/include/memory.h /usr/include/string.h /usr/include/limits.h
+- iframe.o: headers/libpnmrw.h /usr/include/malloc.h headers/ansi.h
+- iframe.o: headers/general.h headers/mtypes.h headers/dct.h headers/frames.h
+- iframe.o: headers/mheaders.h headers/bitio.h headers/frame.h
+- iframe.o: headers/prototypes.h headers/mpeg.h headers/param.h headers/fsize.h
+- iframe.o: headers/parallel.h headers/postdct.h headers/rate.h headers/opts.h
+- pframe.o: /usr/include/assert.h /usr/include/sys/stdsyms.h
+- pframe.o: /usr/include/sys/param.h /usr/include/sys/types.h
+- pframe.o: /usr/include/machine/param.h /usr/include/sys/sysmacros.h
+- pframe.o: /usr/include/sys/time.h /usr/include/machine/spl.h headers/all.h
+- pframe.o: /usr/include/stdio.h /usr/include/stdlib.h /usr/include/math.h
+- pframe.o: /usr/include/memory.h /usr/include/string.h /usr/include/limits.h
+- pframe.o: headers/libpnmrw.h /usr/include/malloc.h headers/ansi.h
+- pframe.o: headers/general.h headers/mtypes.h headers/dct.h headers/bitio.h
+- pframe.o: headers/frames.h headers/mheaders.h headers/frame.h
+- pframe.o: headers/prototypes.h headers/param.h headers/fsize.h
+- pframe.o: headers/postdct.h headers/mpeg.h headers/parallel.h headers/rate.h
+- pframe.o: headers/opts.h
+- bframe.o: headers/all.h /usr/include/stdio.h /usr/include/sys/stdsyms.h
+- bframe.o: /usr/include/stdlib.h /usr/include/math.h /usr/include/memory.h
+- bframe.o: /usr/include/string.h /usr/include/limits.h headers/libpnmrw.h
+- bframe.o: /usr/include/malloc.h /usr/include/sys/types.h headers/ansi.h
+- bframe.o: headers/general.h /usr/include/sys/param.h
+- bframe.o: /usr/include/machine/param.h /usr/include/sys/sysmacros.h
+- bframe.o: /usr/include/sys/time.h /usr/include/machine/spl.h
+- bframe.o: /usr/include/assert.h headers/mtypes.h headers/dct.h
+- bframe.o: headers/bitio.h headers/frames.h headers/mheaders.h headers/frame.h
+- bframe.o: headers/prototypes.h headers/fsize.h headers/param.h
+- bframe.o: headers/postdct.h headers/rate.h headers/opts.h
+- psearch.o: headers/all.h /usr/include/stdio.h /usr/include/sys/stdsyms.h
+- psearch.o: /usr/include/stdlib.h /usr/include/math.h /usr/include/memory.h
+- psearch.o: /usr/include/string.h /usr/include/limits.h headers/libpnmrw.h
+- psearch.o: /usr/include/malloc.h /usr/include/sys/types.h headers/ansi.h
+- psearch.o: headers/general.h headers/mtypes.h headers/dct.h headers/frames.h
+- psearch.o: headers/mheaders.h headers/bitio.h headers/frame.h
+- psearch.o: headers/search.h headers/prototypes.h headers/fsize.h
+- psearch.o: headers/param.h
+- bsearch.o: headers/all.h /usr/include/stdio.h /usr/include/sys/stdsyms.h
+- bsearch.o: /usr/include/stdlib.h /usr/include/math.h /usr/include/memory.h
+- bsearch.o: /usr/include/string.h /usr/include/limits.h headers/libpnmrw.h
+- bsearch.o: /usr/include/malloc.h /usr/include/sys/types.h headers/ansi.h
+- bsearch.o: headers/general.h headers/mtypes.h headers/dct.h headers/frames.h
+- bsearch.o: headers/mheaders.h headers/bitio.h headers/frame.h
+- bsearch.o: headers/search.h headers/fsize.h
+- block.o: headers/all.h /usr/include/stdio.h /usr/include/sys/stdsyms.h
+- block.o: /usr/include/stdlib.h /usr/include/math.h /usr/include/memory.h
+- block.o: /usr/include/string.h /usr/include/limits.h headers/libpnmrw.h
+- block.o: /usr/include/malloc.h /usr/include/sys/types.h headers/ansi.h
+- block.o: headers/general.h headers/mtypes.h headers/dct.h headers/frames.h
+- block.o: headers/mheaders.h headers/bitio.h headers/frame.h
+- block.o: headers/prototypes.h headers/fsize.h headers/opts.h
+- block.o: headers/postdct.h
+- noparallel.o: headers/all.h /usr/include/stdio.h /usr/include/sys/stdsyms.h
+- noparallel.o: /usr/include/stdlib.h /usr/include/math.h /usr/include/memory.h
+- noparallel.o: /usr/include/string.h /usr/include/limits.h headers/libpnmrw.h
+- noparallel.o: /usr/include/malloc.h /usr/include/sys/types.h headers/ansi.h
+- noparallel.o: headers/general.h headers/mtypes.h headers/dct.h
+- noparallel.o: headers/parallel.h headers/bitio.h headers/frame.h
+- noparallel.o: /usr/include/time.h /usr/include/sys/time.h
+- jpeg.o: /usr/include/stdio.h /usr/include/sys/stdsyms.h /usr/include/unistd.h
+- jpeg.o: /usr/include/sys/unistd.h headers/all.h /usr/include/stdlib.h
+- jpeg.o: /usr/include/math.h /usr/include/memory.h /usr/include/string.h
+- jpeg.o: /usr/include/limits.h headers/libpnmrw.h /usr/include/malloc.h
+- jpeg.o: /usr/include/sys/types.h headers/ansi.h headers/general.h
+- jpeg.o: headers/mtypes.h headers/dct.h headers/frames.h headers/mheaders.h
+- jpeg.o: headers/bitio.h headers/frame.h headers/prototypes.h headers/param.h
+- jpeg.o: headers/readframe.h headers/fsize.h headers/rgbtoycc.h headers/jpeg.h
+- jpeg.o: jpeg/jpeglib.h jpeg/jconfig.h jpeg/jmorecfg.h
+- main.o: /usr/include/assert.h /usr/include/sys/stdsyms.h /usr/include/time.h
+- main.o: /usr/include/sys/time.h /usr/include/unistd.h
+- main.o: /usr/include/sys/unistd.h headers/all.h /usr/include/stdio.h
+- main.o: /usr/include/stdlib.h /usr/include/math.h /usr/include/memory.h
+- main.o: /usr/include/string.h /usr/include/limits.h headers/libpnmrw.h
+- main.o: /usr/include/malloc.h /usr/include/sys/types.h headers/ansi.h
+- main.o: headers/general.h headers/mtypes.h headers/dct.h headers/mpeg.h
+- main.o: headers/frame.h headers/search.h headers/prototypes.h headers/param.h
+- main.o: headers/parallel.h headers/bitio.h headers/readframe.h
+- main.o: headers/combine.h headers/frames.h headers/mheaders.h headers/jpeg.h
+- main.o: headers/specifics.h headers/opts.h
+--- 263,265 ----
+diff -c mpeg_encode/bframe.c ../bmt1r2/mpeg_encode/bframe.c
+*** mpeg_encode/bframe.c	Wed Nov 29 00:50:30 1995
+--- ../bmt1r2/mpeg_encode/bframe.c	Mon Aug 14 15:28:26 1995
+***************
+*** 36,46 ****
+   */
+  
+  /*  
+!  *  $Header$
+   *  $Log$
+-  *  Revision 1.21  1995/10/27 00:04:35  smoot
+-  *  error in checking b skip blocks cr vs cb
+-  *
+   *  Revision 1.20  1995/08/14 22:28:11  smoot
+   *  renamed index to idx
+   *  added option to not skip in B frames
+--- 36,43 ----
+   */
+  
+  /*  
+!  *  $Header$
+   *  $Log$
+   *  Revision 1.20  1995/08/14 22:28:11  smoot
+   *  renamed index to idx
+   *  added option to not skip in B frames
+***************
+*** 403,414 ****
+  	    dct_data[y][x].useMotion = NO_MOTION;
+  	    oldMode = MOTION_FORWARD;
+  	    /* calculate forward dct's */
+! 	    if (collect_quant && (collect_quant_detailed & 1)) fprintf(collect_quant_fp, "li\n");
+  	    mp_fwd_dct_block2(curr->y_blocks[y][x], dct[y][x]);
+  	    mp_fwd_dct_block2(curr->y_blocks[y][x+1], dct[y][x+1]);
+  	    mp_fwd_dct_block2(curr->y_blocks[y+1][x], dct[y+1][x]);
+  	    mp_fwd_dct_block2(curr->y_blocks[y+1][x+1], dct[y+1][x+1]);
+! 	    if (collect_quant && (collect_quant_detailed & 1)) {fprintf(collect_quant_fp, "ci\n");}
+  	    mp_fwd_dct_block2(curr->cb_blocks[y>>1][x>>1], dctb[y>>1][x>>1]);
+  	    mp_fwd_dct_block2(curr->cr_blocks[y>>1][x>>1], dctr[y>>1][x>>1]);
+  
+--- 400,411 ----
+  	    dct_data[y][x].useMotion = NO_MOTION;
+  	    oldMode = MOTION_FORWARD;
+  	    /* calculate forward dct's */
+! 	    if (collect_quant && (collect_quant_detailed & 1)) fprintf(collect_quant_fp, "l\n");
+  	    mp_fwd_dct_block2(curr->y_blocks[y][x], dct[y][x]);
+  	    mp_fwd_dct_block2(curr->y_blocks[y][x+1], dct[y][x+1]);
+  	    mp_fwd_dct_block2(curr->y_blocks[y+1][x], dct[y+1][x]);
+  	    mp_fwd_dct_block2(curr->y_blocks[y+1][x+1], dct[y+1][x+1]);
+! 	    if (collect_quant && (collect_quant_detailed & 1)) {fprintf(collect_quant_fp, "c\n");}
+  	    mp_fwd_dct_block2(curr->cb_blocks[y>>1][x>>1], dctb[y>>1][x>>1]);
+  	    mp_fwd_dct_block2(curr->cr_blocks[y>>1][x>>1], dctr[y>>1][x>>1]);
+  
+***************
+*** 1132,1138 ****
+      int *pattern;
+  {
+      Block   motionBlock;
+!     if (collect_quant && (collect_quant_detailed & 1)) fprintf(collect_quant_fp, "lb\n");
+      if ( *pattern & 0x20 ) {
+  	ComputeBMotionBlock(prev, next, by, bx, mode, fmy, fmx,
+  			    bmy, bmx, motionBlock, LUM_BLOCK);
+--- 1129,1135 ----
+      int *pattern;
+  {
+      Block   motionBlock;
+! 
+      if ( *pattern & 0x20 ) {
+  	ComputeBMotionBlock(prev, next, by, bx, mode, fmy, fmx,
+  			    bmy, bmx, motionBlock, LUM_BLOCK);
+***************
+*** 1164,1170 ****
+  	  *pattern ^= 0x4;
+  	}
+      }
+!     if (collect_quant && (collect_quant_detailed & 1)) fprintf(collect_quant_fp, "cbb\n");
+      if ( *pattern & 0x2 ) {
+  	ComputeBMotionBlock(prev, next, by>>1, bx>>1, mode, fmy/2, fmx/2,
+  			    bmy/2, bmx/2, motionBlock, CB_BLOCK);
+--- 1161,1167 ----
+  	  *pattern ^= 0x4;
+  	}
+      }
+! 
+      if ( *pattern & 0x2 ) {
+  	ComputeBMotionBlock(prev, next, by>>1, bx>>1, mode, fmy/2, fmx/2,
+  			    bmy/2, bmx/2, motionBlock, CB_BLOCK);
+***************
+*** 1172,1178 ****
+  	  *pattern ^= 0x2;
+  	}
+      }
+-     if (collect_quant && (collect_quant_detailed & 1)) fprintf(collect_quant_fp, "crb\n");
+  
+      if ( *pattern & 0x1 ) {
+  	ComputeBMotionBlock(prev, next, by>>1, bx>>1, mode, fmy/2, fmx/2,
+--- 1169,1174 ----
+***************
+*** 1326,1332 ****
+      colorErr = ComputeBlockColorDiff(curr->cr_blocks[by >> 1][bx >> 1], mColorBlock);
+      ComputeBMotionBlock(prev, next, by>>1, bx>>1, mode, fmy/2, fmx/2, 
+  			bmy/2, bmx/2, mColorBlock, CB_BLOCK);
+!     colorErr += ComputeBlockColorDiff(curr->cb_blocks[by >> 1][bx >> 1], mColorBlock);
+      
+      return (colorErr < 256); /* lumErr checked above */
+  }
+--- 1322,1328 ----
+      colorErr = ComputeBlockColorDiff(curr->cr_blocks[by >> 1][bx >> 1], mColorBlock);
+      ComputeBMotionBlock(prev, next, by>>1, bx>>1, mode, fmy/2, fmx/2, 
+  			bmy/2, bmx/2, mColorBlock, CB_BLOCK);
+!     colorErr += ComputeBlockColorDiff(curr->cr_blocks[by >> 1][bx >> 1], mColorBlock);
+      
+      return (colorErr < 256); /* lumErr checked above */
+  }
+diff -c mpeg_encode/block.c ../bmt1r2/mpeg_encode/block.c
+*** mpeg_encode/block.c	Tue Nov 28 17:06:33 1995
+--- ../bmt1r2/mpeg_encode/block.c	Mon Aug 07 14:43:48 1995
+***************
+*** 42,48 ****
+   */
+  
+  /*  
+!  *  $Header$
+   *  $Log$
+   *  Revision 1.16  1995/08/07 21:43:29  smoot
+   *  restructured lumdiff so it read better and used a switch instead of ifs
+--- 42,48 ----
+   */
+  
+  /*  
+!  *  $Header$
+   *  $Log$
+   *  Revision 1.16  1995/08/07 21:43:29  smoot
+   *  restructured lumdiff so it read better and used a switch instead of ifs
+***************
+*** 187,193 ****
+  {
+      Block   motionBlock;
+  
+!     if (collect_quant && (collect_quant_detailed & 1)) fprintf(collect_quant_fp, "lp\n");
+      if ( *pattern & 0x20 ) {
+  	ComputeMotionBlock(prev->ref_y, by, bx, my, mx, motionBlock);
+  	if (!ComputeDiffDCTBlock(current->y_blocks[by][bx], dct[by][bx], motionBlock))
+--- 187,193 ----
+  {
+      Block   motionBlock;
+  
+!     if (collect_quant && (collect_quant_detailed & 1)) fprintf(collect_quant_fp, "l\n");
+      if ( *pattern & 0x20 ) {
+  	ComputeMotionBlock(prev->ref_y, by, bx, my, mx, motionBlock);
+  	if (!ComputeDiffDCTBlock(current->y_blocks[by][bx], dct[by][bx], motionBlock))
+***************
+*** 212,218 ****
+  	  *pattern^=0x4;
+      }
+  
+!     if (collect_quant && (collect_quant_detailed & 1)) fprintf(collect_quant_fp, "cbp\n");
+      if ( *pattern & 0x2 ) {
+  	ComputeMotionBlock(prev->ref_cb, by >> 1, bx >> 1, my/2, mx/2, motionBlock);
+  	if (!ComputeDiffDCTBlock(current->cb_blocks[by >> 1][bx >> 1], dctb[by >> 1][bx >> 1], motionBlock))
+--- 212,218 ----
+  	  *pattern^=0x4;
+      }
+  
+!     if (collect_quant && (collect_quant_detailed & 1)) fprintf(collect_quant_fp, "c\n");
+      if ( *pattern & 0x2 ) {
+  	ComputeMotionBlock(prev->ref_cb, by >> 1, bx >> 1, my/2, mx/2, motionBlock);
+  	if (!ComputeDiffDCTBlock(current->cb_blocks[by >> 1][bx >> 1], dctb[by >> 1][bx >> 1], motionBlock))
+***************
+*** 219,225 ****
+  	  *pattern^=0x2;
+      }
+  
+-     if (collect_quant && (collect_quant_detailed & 1)) fprintf(collect_quant_fp, "crp\n");
+      if ( *pattern & 0x1 ) {
+  	ComputeMotionBlock(prev->ref_cr, by >> 1, bx >> 1, my/2, mx/2, motionBlock);
+  	if (!ComputeDiffDCTBlock(current->cr_blocks[by >> 1][bx >> 1], dctr[by >> 1][bx >> 1], motionBlock))
+--- 219,224 ----
+Only in ../bmt1r2/mpeg_encode: convert
+Common subdirectories: mpeg_encode/docs and ../bmt1r2/mpeg_encode/docs
+Common subdirectories: mpeg_encode/examples and ../bmt1r2/mpeg_encode/examples
+diff -c mpeg_encode/frame.c ../bmt1r2/mpeg_encode/frame.c
+*** mpeg_encode/frame.c	Tue Nov 28 17:34:21 1995
+--- ../bmt1r2/mpeg_encode/frame.c	Mon Aug 14 15:27:57 1995
+***************
+*** 105,196 ****
+   MpegFrame *omf,*mf;
+   int insize_x,insize_y,outsize_x,outsize_y;
+  {
+!   MpegFrame *frameA;  /* intermediate frame */
+!   
+!   frameA = (MpegFrame *)malloc(sizeof(MpegFrame));
+!   
+!   if((insize_x != outsize_x)&&(insize_y != outsize_y)){
+!     Resize_Width(frameA,mf,insize_x,insize_y,outsize_x);
+!     Resize_Height(omf,frameA,outsize_x,insize_y,outsize_y);
+!   } else 
+!     if((insize_x ==outsize_x)&&(insize_y != outsize_y)){
+!       Resize_Height(omf,mf,insize_x,insize_y,outsize_y);
+!     } else
+!       if((insize_x !=outsize_x)&&(insize_y == outsize_y)){
+! 	Resize_Width(omf,mf,insize_x,insize_y,outsize_x);
+!       }
+!       else{
+! 	exit(1);
+!       }
+!   /* Free memory */
+!   free(frameA);
+!   free(mf);
+! }
+  
+  /*========================================================
+!  * Resize_Width
+!  *======================================================*/
+  static void  
+!   Resize_Width(omfrw,mfrw,in_x,in_y, out_x)
+  MpegFrame *omfrw,*mfrw;
+  int in_x,in_y, out_x;
+  {
+!   register int y;
+!   int i;
+!   
+!   omfrw->orig_y = NULL;
+!   Fsize_x = out_x;
+!   /* Allocate new frame memory */
+!   omfrw->orig_y = (uint8 **) malloc(sizeof(uint8 *) * Fsize_y);
+!   ERRCHK(omfrw->orig_y, "malloc");
+!   for (y = 0; y < Fsize_y; y++) {
+!     omfrw->orig_y[y] = (uint8 *) malloc(sizeof(uint8) * out_x);
+!     ERRCHK(omfrw->orig_y[y], "malloc");
+!   }
+!   
+!   omfrw->orig_cr = (uint8 **) malloc(sizeof(int8 *) * Fsize_y / 2);
+!   ERRCHK(omfrw->orig_cr, "malloc");
+!   for (y = 0; y < Fsize_y / 2; y++) {
+!     omfrw->orig_cr[y] = (uint8 *) malloc(sizeof(int8) * out_x / 2);
+!     ERRCHK(omfrw->orig_cr[y], "malloc");
+!   }
+!   
+!   omfrw->orig_cb = (uint8 **) malloc(sizeof(int8 *) * Fsize_y / 2);
+!   ERRCHK(omfrw->orig_cb, "malloc");
+!   for (y = 0; y < Fsize_y / 2; y++) {
+!     omfrw->orig_cb[y] = (uint8 *) malloc(sizeof(int8) * out_x / 2);
+!     ERRCHK(omfrw->orig_cb[y], "malloc");
+!   }
+!   
+!   if ( referenceFrame == ORIGINAL_FRAME ) {
+!     omfrw->ref_y = omfrw->orig_y;
+!     omfrw->ref_cr = omfrw->orig_cr;
+!     omfrw->ref_cb = omfrw->orig_cb;
+!   }
+!   
+!   /* resize each component array separately */
+!   Resize_Array_Width(mfrw->orig_y,in_x,in_y,omfrw->orig_y,out_x);
+!   Resize_Array_Width(mfrw->orig_cr,(in_x/2),(in_y/2),omfrw->orig_cr,(out_x/2));
+!   Resize_Array_Width(mfrw->orig_cb,(in_x/2),(in_y/2),omfrw->orig_cb,(out_x/2));
+!   
+!   /* Free old frame memory */
+!   if (mfrw->orig_y) {
+!     for (i = 0; i < in_y; i++) {
+!       free(mfrw->orig_y[i]);
+      }
+!     free(mfrw->orig_y);
+!     
+!     for (i = 0; i < in_y / 2; i++) {
+!       free(mfrw->orig_cr[i]);
+      }
+!     free(mfrw->orig_cr);
+!     
+!     for (i = 0; i < in_y / 2; i++) {
+!       free(mfrw->orig_cb[i]);
+      }
+!     free(mfrw->orig_cb);
+!   }
+!   
+  }
+  
+  /*=======================================================
+--- 105,195 ----
+   MpegFrame *omf,*mf;
+   int insize_x,insize_y,outsize_x,outsize_y;
+  {
+! MpegFrame *frameA;  /* intermediate frame */
+  
++ frameA = (MpegFrame *)malloc(sizeof(MpegFrame));
++ 
++ if((insize_x != outsize_x)&&(insize_y != outsize_y)){
++ Resize_Width(frameA,mf,insize_x,insize_y,outsize_x);
++ Resize_Height(omf,frameA,outsize_x,insize_y,outsize_y);
++ }else 
++ if((insize_x ==outsize_x)&&(insize_y != outsize_y)){
++ Resize_Height(omf,mf,insize_x,insize_y,outsize_y);
++ } else
++ if((insize_x !=outsize_x)&&(insize_y == outsize_y)){
++ Resize_Width(omf,mf,insize_x,insize_y,outsize_x);
++ }
++ else{
++   exit(1);
++   }
++ /* Free memory */
++ free(frameA);
++ free(mf);
++ }
+  /*========================================================
+! * Resize_Width
+! *======================================================*/
+  static void  
+! Resize_Width(omfrw,mfrw,in_x,in_y, out_x)
+  MpegFrame *omfrw,*mfrw;
+  int in_x,in_y, out_x;
+  {
+! register int y;
+! int i;
+! 
+! omfrw->orig_y = NULL;
+! Fsize_x = out_x;
+! /* Allocate new frame memory */
+!     omfrw->orig_y = (uint8 **) malloc(sizeof(uint8 *) * Fsize_y);
+!     ERRCHK(omfrw->orig_y, "malloc");
+!     for (y = 0; y < Fsize_y; y++) {
+! 	omfrw->orig_y[y] = (uint8 *) malloc(sizeof(uint8) * out_x);
+! 	ERRCHK(omfrw->orig_y[y], "malloc");
+      }
+! 
+!     omfrw->orig_cr = (uint8 **) malloc(sizeof(int8 *) * Fsize_y / 2);
+!     ERRCHK(omfrw->orig_cr, "malloc");
+!     for (y = 0; y < Fsize_y / 2; y++) {
+! 	omfrw->orig_cr[y] = (uint8 *) malloc(sizeof(int8) * out_x / 2);
+! 	ERRCHK(omfrw->orig_cr[y], "malloc");
+      }
+! 
+!     omfrw->orig_cb = (uint8 **) malloc(sizeof(int8 *) * Fsize_y / 2);
+!     ERRCHK(omfrw->orig_cb, "malloc");
+!     for (y = 0; y < Fsize_y / 2; y++) {
+! 	omfrw->orig_cb[y] = (uint8 *) malloc(sizeof(int8) * out_x / 2);
+! 	ERRCHK(omfrw->orig_cb[y], "malloc");
+      }
+! 
+!     if ( referenceFrame == ORIGINAL_FRAME ) {
+! 	omfrw->ref_y = omfrw->orig_y;
+! 	omfrw->ref_cr = omfrw->orig_cr;
+! 	omfrw->ref_cb = omfrw->orig_cb;
+!     }
+! 
+! /* resize each component array separately */
+! Resize_Array_Width(mfrw->orig_y,in_x,in_y,omfrw->orig_y,out_x);
+! Resize_Array_Width(mfrw->orig_cr,(in_x/2),(in_y/2),omfrw->orig_cr,(out_x/2));
+! Resize_Array_Width(mfrw->orig_cb,(in_x/2),(in_y/2),omfrw->orig_cb,(out_x/2));
+! 
+! /* Free old frame memory */
+!     if (mfrw->orig_y) {
+! 	for (i = 0; i < in_y; i++) {
+! 	    free(mfrw->orig_y[i]);
+! 	}
+! 	free(mfrw->orig_y);
+! 
+! 	for (i = 0; i < in_y / 2; i++) {
+! 	    free(mfrw->orig_cr[i]);
+! 	}
+! 	free(mfrw->orig_cr);
+! 
+! 	for (i = 0; i < in_y / 2; i++) {
+! 	    free(mfrw->orig_cb[i]);
+! 	}
+! 	free(mfrw->orig_cb);
+!     }
+! 
+  }
+  
+  /*=======================================================
+diff -c mpeg_encode/fsize.c ../bmt1r2/mpeg_encode/fsize.c
+*** mpeg_encode/fsize.c	Fri Sep 08 18:09:25 1995
+--- ../bmt1r2/mpeg_encode/fsize.c	Mon Jul 03 14:57:05 1995
+***************
+*** 112,145 ****
+      int width;
+      int height;
+  {
+!   static boolean warned16 = FALSE,
+!                  warnedSz = FALSE;
+!   int oFsize_x, oFsize_y;
+  
+!   oFsize_x = Fsize_x;
+!   oFsize_y = Fsize_y;
+!   Fsize_x = width;
+!   Fsize_y = height;
+!   Fsize_Validate(&Fsize_x, &Fsize_y);
+!   
+!   if ((Fsize_x != width || Fsize_y != height) && !warned16) {
+!     warned16 = TRUE;
+!     fprintf(stderr, "WARNING: The input images are not a multiple of 16 in dimension\n\tthey will be trimmed.\n\n");
+!   }
+!   if ((((oFsize_x !=0) && (oFsize_x != Fsize_x)) ||
+!        ((oFsize_y !=0) && (oFsize_y != Fsize_y))) &&
+!       !warnedSz) {
+!     fprintf(stderr, "\nWARNING:: Your images seem to be of different sizes.\n");
+!     fprintf(stderr, "\tThis is likely to not work, and dump core.\n");
+!     fprintf(stderr, "\tBut we're feeling risky, we'll try it anyway!\n\n");
+!     warnedSz = TRUE;
+!   }
+  
+-   if ((Fsize_x==0) || (Fsize_y==0)) {
+-     fprintf(stderr,"Frame %d:  size is zero!\n",id);
+-     /*      exit(1); */
+-   }
+-   
+  #ifdef BLEAH
+      if (Fsize_x == 0) {
+  	Fsize_x = width;
+--- 112,126 ----
+      int width;
+      int height;
+  {
+!     Fsize_x = width;
+!     Fsize_y = height;
+!     Fsize_Validate(&Fsize_x, &Fsize_y);
+  
+!     if ((Fsize_x==0) || (Fsize_y==0)) {
+!       fprintf(stderr,"Frame %d:  size is zero!\n",id);
+! /*      exit(1); */
+!     }
+  
+  #ifdef BLEAH
+      if (Fsize_x == 0) {
+  	Fsize_x = width;
+Common subdirectories: mpeg_encode/headers and ../bmt1r2/mpeg_encode/headers
+diff -c mpeg_encode/iframe.c ../bmt1r2/mpeg_encode/iframe.c
+*** mpeg_encode/iframe.c	Tue Nov 28 18:02:28 1995
+--- ../bmt1r2/mpeg_encode/iframe.c	Mon Aug 14 15:30:06 1995
+***************
+*** 40,46 ****
+   */
+  
+  /*
+!  *  $Header$
+   *  $Log$
+   *  Revision 1.23  1995/08/14 22:29:49  smoot
+   *  changed inits in BlockComputeSNR so sgi compiler would be happy
+--- 40,46 ----
+   */
+  
+  /*
+!  *  $Header$
+   *  $Log$
+   *  Revision 1.23  1995/08/14 22:29:49  smoot
+   *  changed inits in BlockComputeSNR so sgi compiler would be happy
+***************
+*** 483,495 ****
+      /* DCT the macroblocks */
+      for (y = 0;  y < (Fsize_y >> 3);  y += 2) {
+        for (x = 0;  x < (Fsize_x >> 3);  x += 2) {
+! 	if (collect_quant && (collect_quant_detailed & 1)) fprintf(collect_quant_fp, "li\n");
+  	if (DoLaplace) {LaplaceCnum = 0;}
+  	mp_fwd_dct_block2(current->y_blocks[y][x], dct[y][x]);
+  	mp_fwd_dct_block2(current->y_blocks[y][x+1], dct[y][x+1]);
+  	mp_fwd_dct_block2(current->y_blocks[y+1][x], dct[y+1][x]);
+  	mp_fwd_dct_block2(current->y_blocks[y+1][x+1], dct[y+1][x+1]);
+! 	if (collect_quant && (collect_quant_detailed & 1)) fprintf(collect_quant_fp, "ci\n");
+  	if (DoLaplace) {LaplaceCnum = 1;}
+  	mp_fwd_dct_block2(current->cb_blocks[y>>1][x>>1], dctb[y>>1][x>>1]);
+  	if (DoLaplace) {LaplaceCnum = 2;}
+--- 483,495 ----
+      /* DCT the macroblocks */
+      for (y = 0;  y < (Fsize_y >> 3);  y += 2) {
+        for (x = 0;  x < (Fsize_x >> 3);  x += 2) {
+! 	if (collect_quant && (collect_quant_detailed & 1)) fprintf(collect_quant_fp, "l\n");
+  	if (DoLaplace) {LaplaceCnum = 0;}
+  	mp_fwd_dct_block2(current->y_blocks[y][x], dct[y][x]);
+  	mp_fwd_dct_block2(current->y_blocks[y][x+1], dct[y][x+1]);
+  	mp_fwd_dct_block2(current->y_blocks[y+1][x], dct[y+1][x]);
+  	mp_fwd_dct_block2(current->y_blocks[y+1][x+1], dct[y+1][x+1]);
+! 	if (collect_quant && (collect_quant_detailed & 1)) fprintf(collect_quant_fp, "c\n");
+  	if (DoLaplace) {LaplaceCnum = 1;}
+  	mp_fwd_dct_block2(current->cb_blocks[y>>1][x>>1], dctb[y>>1][x>>1]);
+  	if (DoLaplace) {LaplaceCnum = 2;}
+***************
+*** 523,529 ****
+  	    QScale = newQScale;
+  	  }
+  	}
+! 
+  	if ( (mbAddress % blocksPerSlice == 0) && (mbAddress != 0) ) {
+  	  /* create a new slice */
+  	  if (specificsOn) {
+--- 523,529 ----
+  	    QScale = newQScale;
+  	  }
+  	}
+! 	
+  	if ( (mbAddress % blocksPerSlice == 0) && (mbAddress != 0) ) {
+  	  /* create a new slice */
+  	  if (specificsOn) {
+***************
+*** 858,863 ****
+--- 858,866 ----
+      int xsz = (Fsize_x>>3);
+      
+      needs_init = FALSE;
++     for (y=0; y<3; y++) {
++       varDiff[y] = ratio[y] = total[y] = 0.0;
++     }
+      ySize[0]=Fsize_y;     xSize[0]=Fsize_x;
+      ySize[1]=Fsize_y>>1;  xSize[1]=Fsize_x>>1;
+      ySize[2]=Fsize_y>>1;  xSize[2]=Fsize_x>>1;
+***************
+*** 891,900 ****
+      }
+    }
+    
+-   for (y=0; y<3; y++) {
+-     varDiff[y] = ratio[y] = total[y] = 0.0;
+-   }
+- 
+    /* find all the signal and noise */
+    for (y = 0; y < ySize[0]; y++) {
+      for (x = 0; x < xSize[0]; x++) {
+--- 894,899 ----
+Common subdirectories: mpeg_encode/jpeg and ../bmt1r2/mpeg_encode/jpeg
+diff -c mpeg_encode/jpeg.c ../bmt1r2/mpeg_encode/jpeg.c
+*** mpeg_encode/jpeg.c	Fri Sep 08 18:10:40 1995
+--- ../bmt1r2/mpeg_encode/jpeg.c	Fri Aug 04 16:35:07 1995
+***************
+*** 31,41 ****
+   */
+  
+  /*  
+!  *  $Header$
+   *  $Log$
+-  *  Revision 1.7  1995/09/09 01:10:28  smoot
+-  *  added greyscale, and fixed odd-sized images
+-  *
+   * Revision 1.6  1995/06/08  20:36:00  smoot
+   * added "b"'s to fopen()s for MSDOS
+   *
+--- 31,38 ----
+   */
+  
+  /*  
+!  *  $Header$
+   *  $Log$
+   * Revision 1.6  1995/06/08  20:36:00  smoot
+   * added "b"'s to fopen()s for MSDOS
+   *
+***************
+*** 68,74 ****
+   *==============*/
+  
+  #include <stdio.h>
+- #include <unistd.h> /* lseek */
+  #include "all.h"
+  #include "mtypes.h"
+  #include "frames.h"
+--- 65,70 ----
+***************
+*** 83,91 ****
+  #undef DCTSIZE2
+  #include "jpeg/jpeglib.h"
+  
+  #define HEADER_SIZE 607   /*JFIF header size used on output images*/
+  
+- void safe_jcopy_sample_rows _ANSI_ARGS_ ((JSAMPARRAY input_array, int source_row, JSAMPARRAY output_array, int dest_row, int num_rows, JDIMENSION num_cols, JDIMENSION max_cols, boolean resample));
+  
+  
+  /*=======================================================================*
+--- 79,87 ----
+  #undef DCTSIZE2
+  #include "jpeg/jpeglib.h"
+  
++ 
+  #define HEADER_SIZE 607   /*JFIF header size used on output images*/
+  
+  
+  
+  /*=======================================================================*
+***************
+*** 416,467 ****
+     * working data (which is allocated as needed by the JPEG library).
+     */
+    static struct jpeg_decompress_struct cinfo;
+!   static struct jpeg_error_mgr jerr;
+    /* More stuff */
+    JSAMPARRAY scanarray[3];
+!   int ci, cp;
+!   JDIMENSION ncols[3], nrows[3], maxcols[3];
+    jpeg_component_info *compptr;
+!   JDIMENSION buffer_height;
+    int current_row[3];
+-   int h_samp[3],v_samp[3];
+-   static boolean first=TRUE;
+    uint8 **orig[3];
+!   boolean resample = FALSE;
+  
+!   if (first) {
+!     first = FALSE;
+!     /* Allocate and initialize JPEG decompression object */
+!     cinfo.err = jpeg_std_error(&jerr);
+    }
+    
+!   if (fp == stdin) {
+!     static boolean first_stdin = TRUE;
+!     /*
+!      ** If we're reading from stdin we want to create the cinfo struct
+!      ** ONCE (during the first read).  This is because when reading jpeg
+!      ** from stdin we will not release the cinfo struct, because doing
+!      ** so would totally screw up the read buffer and make it impossible
+!      ** to read jpegs from stdin.
+!      ** Dave Scott (dhs), UofO, 7/19/95
+!      */
+!     if (first_stdin) {
+!       first_stdin = FALSE;
+!       /* Now we can initialize the JPEG decompression object. */
+!       jpeg_create_decompress(&cinfo);
+!       /* specify data source (eg, a file) */
+!       jpeg_stdio_src(&cinfo, fp);
+!     } /* else do nothing */
+!   } else {
+!     /* Now we can initialize the JPEG decompression object. */
+!     jpeg_create_decompress(&cinfo);
+!     /* specify data source (eg, a file) */
+!     /* Normal case, use the file! */
+!     jpeg_stdio_src(&cinfo, fp);
+!   }
+    
+    /* read file parameters with jpeg_read_header() */
+    
+    (void) jpeg_read_header(&cinfo, TRUE);
+    /* We can ignore the return value from jpeg_read_header since
+     *   (a) suspension is not possible with the stdio data source, and
+--- 412,462 ----
+     * working data (which is allocated as needed by the JPEG library).
+     */
+    static struct jpeg_decompress_struct cinfo;
+!   struct jpeg_error_mgr jerr;
+    /* More stuff */
+    JSAMPARRAY scanarray[3];
+!   int ci,cd,cp;
+!   JDIMENSION ncols[3];
+!   JDIMENSION nrows[3];
+    jpeg_component_info *compptr;
+!   int buffer_height;
+    int current_row[3];
+    uint8 **orig[3];
+!   int h_samp[3],v_samp[3];
+!   int max_h_samp,max_v_samp;
+!   int temp_h, temp_v;
+!   int temp;
+  
+!   /* Allocate and initialize JPEG decompression object */
+!    cinfo.err = jpeg_std_error(&jerr);
+! 
+!   /*
+!   ** If we're reading from stdin we want to create the cinfo struct
+!   ** ONCE (during the first read).  This is because when reading jpeg
+!   ** from stdin we will not release the cinfo struct, because doing
+!   ** so would totally screw up the read buffer and make it impossible
+!   ** to read jpegs from stdin.
+!   ** Dave Scott (dhs), UofO, 7/19/95
+!   */
+!   {
+!     static int first_stdin = 1;
+!     if( (fp != stdin) || first_stdin)
+!       {
+! 	first_stdin = 0;
+! 	/* Now we can initialize the JPEG decompression object. */
+! 	jpeg_create_decompress(&cinfo);
+! 	/* specify data source (eg, a file) */
+! 	jpeg_stdio_src(&cinfo, fp);
+!       }
+    }
+    
+!   /* specify data source (eg, a file) */
+    
++   jpeg_stdio_src(&cinfo, fp);
++   
+    /* read file parameters with jpeg_read_header() */
+    
++   
+    (void) jpeg_read_header(&cinfo, TRUE);
+    /* We can ignore the return value from jpeg_read_header since
+     *   (a) suspension is not possible with the stdio data source, and
+***************
+*** 468,503 ****
+     *   (b) we passed TRUE to reject a tables-only JPEG file as an error.
+     */
+    
+-   /* read out sampling factors */
+-   for(cp=0, compptr = cinfo.comp_info;
+-       cp < cinfo.num_components;
+-       cp++, compptr++) {
+-     h_samp[cp] = compptr->h_samp_factor;
+-     v_samp[cp] = compptr->v_samp_factor;
+-   }
+-   
+-   
+-   /* So we can do the more efficient raw reading */
+    /* set parameters for decompression */
+    cinfo.raw_data_out = TRUE;
+!   if (cinfo.jpeg_color_space == JCS_YCbCr) {
+!     /* Nothing, this is what we want */
+!   } else if (cinfo.jpeg_color_space == JCS_GRAYSCALE) {
+!     /* deal with it later */
+!   } else {
+!     /* who knows, let jpeg handle it */
+!       fprintf(stderr, "Not a supported colorspace (%d)\n",cinfo.jpeg_color_space);
+!       fprintf(stderr, "Try\tBASE_FILE_FORMAT PNM\n\tINPUT_CONVERT djpeg *\n");
+!       exit(1);
+!     }
+! 
+    jpeg_calc_output_dimensions(&cinfo);
+    
+    /* tell mpeg_encode the size of the JPEG Image*/
+!   Fsize_Note(mf->id, (int)(cinfo.image_width), (int)(cinfo.image_height));
+    
+    /* Allocate memory for the raw YCbCr data to occupy*/
+!   Frame_AllocYCC(mf);		/*allocate space for mpeg frame*/
+    
+    /* copy pointers to array structure- this make the following
+       code more compact  */
+--- 463,487 ----
+     *   (b) we passed TRUE to reject a tables-only JPEG file as an error.
+     */
+    
+    /* set parameters for decompression */
++ #ifdef JPEG4
++   cinfo.want_raw_output = TRUE;
++ #else
+    cinfo.raw_data_out = TRUE;
+! #endif
+!   cinfo.out_color_space = JCS_YCbCr;
+!   
+!   /* calculate image output dimensions */
+    jpeg_calc_output_dimensions(&cinfo);
++   /* the above calculation will set these soon */
++   /* for now we'll set them ourselves */
+    
++   
+    /* tell mpeg_encode the size of the JPEG Image*/
+!   Fsize_Note(mf->id,(int)(cinfo.image_width),(int)(cinfo.image_height));
+    
+    /* Allocate memory for the raw YCbCr data to occupy*/
+!   Frame_AllocYCC(mf);      /*allocate space for mpeg frame*/
+    
+    /* copy pointers to array structure- this make the following
+       code more compact  */
+***************
+*** 504,581 ****
+    orig[0] = mf->orig_y;
+    orig[1] = mf->orig_cb;
+    orig[2] = mf->orig_cr;
+! 
+    jpeg_start_decompress(&cinfo);
+    
+-   buffer_height = cinfo.max_v_samp_factor * cinfo.min_DCT_scaled_size;
+    
+!   if ((cinfo.jpeg_color_space != JCS_GRAYSCALE)) {
+!     if ((h_samp[0] == 2) && (h_samp[1] == 1) && (h_samp[2] == 1) &&
+! 	(v_samp[0] == 1) && (v_samp[1] == 1) && (v_samp[2] == 1)) {
+!       static boolean printed = FALSE;
+!       
+!       resample = TRUE;
+!       if (!printed) {
+! 	fprintf(stderr, "mpeg_encode will resample this JPEG for you.\n");
+! 	fprintf(stderr, "you may wish to compare the quality against doing:\n");
+! 	fprintf(stderr, "\tBASE_FILE_FORMAT PNM\n\tINPUT_CONVERT djpeg *\n");
+! 	fprintf(stderr, "which will take longer, but may look better\n");
+! 	printed = TRUE;
+!       }
+!     } else if ((h_samp[0] == 2)  && (h_samp[1] == 1) && (h_samp[2] == 1) &&
+! 	       (v_samp[0] == 2)  && (v_samp[1] == 1) && (v_samp[2] == 1)){
+!       /* we are 4:1:1 as expected by the encoder*/
+!     } else {
+!       fprintf(stderr, "Not a supported subsampling ratio\n");
+!       fprintf(stderr, "Try\tBASE_FILE_FORMAT PNM\n\tINPUT_CONVERT djpeg *\n");
+!       exit(1);
+!     }}
+    
+!   for (cp = 0, compptr = cinfo.comp_info;
+!        cp < cinfo.num_components;
+!        cp++, compptr++) {
+!     /* larger than needed, but who cares, seems to work better */
+!     ncols[cp] = (JDIMENSION)(buffer_height * (1 + cinfo.image_width/buffer_height));
+!     maxcols[cp] = (cp==0) ? Fsize_x : Fsize_x>>1;
+!     nrows[cp] = (JDIMENSION)((buffer_height*compptr->v_samp_factor) /
+! 			     cinfo.max_v_samp_factor);
+      scanarray[cp] = (*cinfo.mem->alloc_sarray)
+        ((j_common_ptr) &cinfo, JPOOL_IMAGE, ncols[cp], nrows[cp]);
+    }
+    
+    while (cinfo.output_scanline < cinfo.output_height) {
+      (void) jpeg_read_raw_data(&cinfo, scanarray, buffer_height);
+!     if (cinfo.output_scanline > Fsize_y) continue;
+  
+!     /* transfer data from jpeg buffer to MPEG frame */
+!     /* calculate the row we wish to output into */
+!     for (ci = 0, compptr = cinfo.comp_info;
+! 	ci < cinfo.num_components;
+! 	ci++, compptr++){
+!       if (resample) {
+! 	if (ci == 0) {
+! 	  current_row[ci] = cinfo.output_scanline-buffer_height;
+! 	} else {
+! 	  current_row[ci] = (cinfo.output_scanline-buffer_height)/2;
+  	}
+-       } else {
+- 	current_row[ci] = ((cinfo.output_scanline - buffer_height)*
+- 			  (v_samp[ci])/cinfo.max_v_samp_factor);  
+        }
+!       safe_jcopy_sample_rows(scanarray[ci], 0, (JSAMPARRAY)(orig[ci]),
+! 			     current_row[ci], nrows[ci], ncols[ci], 
+! 			     maxcols[ci], (ci==0) ? FALSE : resample);
+      }
+!   }
+    
+-   /* If we have greyscale, clear out Cr and Cb */
+-   if (cinfo.jpeg_color_space == JCS_GRAYSCALE) {
+-    for (ci = 1;  ci < 3;  ci++) {
+-      for (cp = 0; cp < Fsize_y;  cp++) {
+-       memset(orig[ci][cp], 128, (Fsize_x>>1));
+-       memset(orig[ci][cp], 128, (Fsize_x>>1));
+-     }}}
+- 
+    /* Step 7: Finish decompression */
+    
+    (void) jpeg_finish_decompress(&cinfo);
+--- 488,591 ----
+    orig[0] = mf->orig_y;
+    orig[1] = mf->orig_cb;
+    orig[2] = mf->orig_cr;
+!   
+!   /* Note that we can use the info obtained from jpeg_read_header.
+!    */
+!   
+!   /* Start decompressor */
+!   
+    jpeg_start_decompress(&cinfo);
+    
+    
+!   /* JSAMPLEs per row in output buffer  */
+!   /* collect component subsample values*/
+!   for(cp=0,compptr = cinfo.comp_info;cp<cinfo.num_components;
+!       cp++,compptr++) {
+!     h_samp[cp] = compptr->h_samp_factor;
+!     v_samp[cp] = compptr->v_samp_factor;
+!   }
+!   /* calculate max subsample values*/
+!   temp_h = (h_samp[0]<h_samp[1]) ? h_samp[1] : h_samp[0];
+!   max_h_samp = (temp_h<h_samp[2]) ? h_samp[2]:temp_h;
+!   temp_v = (v_samp[0]<v_samp[1]) ? v_samp[1] : v_samp[0];
+!   max_v_samp = (temp_v<v_samp[2]) ? v_samp[2]:temp_v;
+    
+!   /* Make an 8-row-high sample array that will go away when done with image */
+! #ifdef JPEG4
+!   buffer_height = 8;  /* could be 2, 4,8 rows high */
+! #else
+!   buffer_height = cinfo.max_v_samp_factor * cinfo.min_DCT_scaled_size;
+! #endif
+!   
+!   for(cp=0,compptr = cinfo.comp_info;cp<cinfo.num_components;
+!       cp++,compptr++) {
+!     ncols[cp] = (JDIMENSION)((cinfo.image_width*compptr->h_samp_factor)/
+! 			     max_h_samp);
+!     
+!     nrows[cp] = (JDIMENSION)((buffer_height*compptr->v_samp_factor)/
+! 			     max_v_samp);
+!     
+      scanarray[cp] = (*cinfo.mem->alloc_sarray)
+        ((j_common_ptr) &cinfo, JPOOL_IMAGE, ncols[cp], nrows[cp]);
++     
+    }
+    
++   
++   /*  while (scan lines remain to be read) */
++   /*           jpeg_read_scanlines(...); */
++   
++   /* Here we use the library's state variable cinfo.output_scanline as the
++    * loop counter, so that we don't have to keep track ourselves.
++    */
++ 
+    while (cinfo.output_scanline < cinfo.output_height) {
++ 
++ #ifdef JPEG4
++     (void) jpeg_read_raw_scanlines(&cinfo, scanarray, buffer_height);
++ #else
+      (void) jpeg_read_raw_data(&cinfo, scanarray, buffer_height);
+! #endif
+  
+! /* alter subsample ratio's if neccessary */
+!     if((h_samp[0]==2)&&(h_samp[1]==1)&&(h_samp[2]==1)&&
+!        (v_samp[0]==2)&&(v_samp[1]==1)&&(v_samp[2]==1)){
+!       /* we are 4:1:1 as expected by the encoder*/
+!     }else if((h_samp[0]==2)&&(h_samp[1]==1)&&(h_samp[2]==1)&&
+! 	     (v_samp[0]==1)&&(v_samp[1]==1)&&(v_samp[2]==1)){
+!       /* must subsample 2:1 vertically and adjust params*/
+!       for(ci=1; ci<3; ci++){
+! 	for(cp=0; cp<(buffer_height/2);cp=cp+1){
+! 	  for(cd=0;cd<ncols[ci];cd++){
+! 	    temp =((scanarray[ci][cp*2][cd]+scanarray[ci][(cp*2)+1][cd])/2);
+! 	    scanarray[ci][cp][cd] = (JSAMPLE)(temp);
+! 	  }
+  	}
+        }
+!       /* only reset values the first time through*/
+!       if(cinfo.output_scanline==buffer_height){
+! 	nrows[1] = nrows[1]/2;
+! 	nrows[2] = nrows[2]/2;
+! 	max_v_samp = 2;
+! 	v_samp[0] = 2;
+!       }
+!     }else{
+!       fprintf(stderr, "Not a supported subsampling ratio\n");
+!       exit(1);
+      }
+!     
+!     /* transfer data from jpeg buffer to MPEG frame */
+!     /* calculate the row we wish to output into */
+!     for(ci=0,compptr=cinfo.comp_info;ci<cinfo.num_components;
+! 	ci++,compptr++){
+!       current_row[ci] =((cinfo.output_scanline - buffer_height)*
+! 			(v_samp[ci])/max_v_samp);  
+!       
+!       jcopy_sample_rows(scanarray[ci],0,(JSAMPARRAY)(orig[ci]),
+! 			current_row[ci],nrows[ci],ncols[ci]);
+!     }
+!     
+!   }  
+    
+    /* Step 7: Finish decompression */
+    
+    (void) jpeg_finish_decompress(&cinfo);
+***************
+*** 593,599 ****
+     ** we loose the beginning of the next image, and we're screwed.
+    ** Dave Scott (dhs), UofO, 7/19/95
+    */
+!   if (fp == stdin) {
+      static int no_from_stdin = 0;
+      no_from_stdin++;
+      /* fprintf( stderr, "%d jpeg images read from stdin\n", no_from_stdin); */
+--- 603,609 ----
+     ** we loose the beginning of the next image, and we're screwed.
+    ** Dave Scott (dhs), UofO, 7/19/95
+    */
+!   if( fp == stdin) {
+      static int no_from_stdin = 0;
+      no_from_stdin++;
+      /* fprintf( stderr, "%d jpeg images read from stdin\n", no_from_stdin); */
+***************
+*** 621,651 ****
+  }
+  
+  
+! 
+! void
+! safe_jcopy_sample_rows (input_array, source_row, output_array, dest_row,
+! 			num_rows,  num_cols, max_cols, resample)
+! JSAMPARRAY input_array, output_array;
+! int source_row, dest_row, num_rows;
+! JDIMENSION num_cols, max_cols;
+! boolean resample;
+! /* Copy some rows of samples from one place to another.
+!  * num_rows rows are copied from input_array[source_row++]
+!  * to output_array[dest_row++]; these areas may overlap for duplication.
+!  * The source and destination arrays must be at least as wide as num_cols.
+   */
+- {
+-   register uint8 *inptr, *outptr;
+-   register size_t count = (size_t) (num_cols * sizeof(JSAMPLE));
+-   register int row;
+-   
+-   input_array += source_row;
+-   output_array += dest_row;
+-   if (count > max_cols) {count = max_cols;}
+- 
+-   for (row = num_rows-resample; row > 0; row -= (1 + resample)) {
+-     inptr = *input_array++;
+-     outptr = *output_array++;
+-     memcpy(outptr, inptr, count);
+-   }
+- }
+--- 631,661 ----
+  }
+  
+  
+! /*
+!  * SOME FINE POINTS:
+!  *
+!  * In the above loop, we ignored the return value of jpeg_read_scanlines,
+!  * which is the number of scanlines actually read.  We could get away with
+!  * this for the same reasons discussed in the compression example.  Actually
+!  * there is one perfectly normal situation in which jpeg_read_scanlines may
+!  * return fewer lines than you asked for: at the bottom of the image.  But the
+!  * loop above can't ask for more lines than there are in the image since it
+!  * reads only one line at a time.
+!  *
+!  * In some high-speed operating modes, some data copying can be saved by
+!  * making the buffer passed to jpeg_read_scanlines be cinfo.rec_outbuf_height
+!  * lines high (or a multiple thereof).  This will usually be 1, 2, or 4 lines.
+!  *
+!  * To decompress multiple images, you can repeat the whole sequence, or you
+!  * can keep the JPEG object around and just repeat steps 2-7.  This will
+!  * save a little bit of startup/shutdown time.
+!  *
+!  * As with compression, some operating modes may require temporary files.
+!  * On some systems you may need to set up a signal handler to ensure that
+!  * temporary files are deleted if the program is interrupted.
+!  *
+!  * Scanlines are returned in the same order as they appear in the JPEG file,
+!  * which is standardly top-to-bottom.  If you must have data supplied
+!  * bottom-to-top, you can use one of the virtual arrays provided by the
+!  * JPEG memory manager to invert the data.  See wrrle.c for an example.
+   */
+diff -c mpeg_encode/main.c ../bmt1r2/mpeg_encode/main.c
+*** mpeg_encode/main.c	Fri Nov 10 18:04:23 1995
+--- ../bmt1r2/mpeg_encode/main.c	Mon Aug 07 14:44:53 1995
+***************
+*** 30,36 ****
+   */
+  
+  /*  
+!  *  $Header$
+   *  $Log$
+   *  Revision 1.25  1995/08/07 21:44:21  smoot
+   *  renamed index -> idx; save the encoder's name; compute frame types ahead of time
+--- 30,36 ----
+   */
+  
+  /*  
+!  *  $Header$
+   *  $Log$
+   *  Revision 1.25  1995/08/07 21:44:21  smoot
+   *  renamed index -> idx; save the encoder's name; compute frame types ahead of time
+***************
+*** 116,123 ****
+   *==============*/
+  
+  #include <assert.h>
+- #include <time.h>
+- #include <unistd.h>
+  #include "all.h"
+  #include "mtypes.h"
+  #include "mpeg.h"
+--- 116,121 ----
+***************
+*** 131,138 ****
+  #include "jpeg.h"
+  #include "specifics.h"
+  #include "opts.h"
+  
+- 
+  int	main _ANSI_ARGS_((int argc, char **argv));
+  
+  /*==================*
+--- 129,136 ----
+  #include "jpeg.h"
+  #include "specifics.h"
+  #include "opts.h"
++ #include <time.h>
+  
+  int	main _ANSI_ARGS_((int argc, char **argv));
+  
+  /*==================*
+***************
+*** 471,482 ****
+  	} else {
+  	    /* check if parameter file has absolute path */
+  	    if ( (argv[argc-1][0] != '/') && (argv[argc-1][0] != '~') ) {
+! 	      char *buf;
+! 	      buf = malloc(MAXPATHLEN+1);
+! 	      ERRCHK(buf, "main");
+! 	      getcwd(buf, MAXPATHLEN);
+! 	      strcat(buf, argv[argc-1]);
+! 	      StartMasterServer(numInputFiles, buf, outputFileName);
+  	    } else {
+  		StartMasterServer(numInputFiles, argv[argc-1], outputFileName);
+  	    }
+--- 469,476 ----
+  	} else {
+  	    /* check if parameter file has absolute path */
+  	    if ( (argv[argc-1][0] != '/') && (argv[argc-1][0] != '~') ) {
+! 		fprintf(stderr, "ERROR:  For parallel execution, please use absolute path for parameter file!\n");
+! 		exit(1);
+  	    } else {
+  		StartMasterServer(numInputFiles, argv[argc-1], outputFileName);
+  	    }
+diff -c mpeg_encode/mpeg.c ../bmt1r2/mpeg_encode/mpeg.c
+*** mpeg_encode/mpeg.c	Mon Sep 18 14:54:30 1995
+--- ../bmt1r2/mpeg_encode/mpeg.c	Wed Aug 16 11:10:50 1995
+***************
+*** 34,40 ****
+   */
+  
+  /*  
+!  *  $Header$
+   *  $Log$
+   *  Revision 1.24  1995/08/16 18:10:48  smoot
+   *  *** empty log message ***
+--- 34,40 ----
+   */
+  
+  /*  
+!  *  $Header$
+   *  $Log$
+   *  Revision 1.24  1995/08/16 18:10:48  smoot
+   *  *** empty log message ***
+***************
+*** 221,227 ****
+  static void	ComputeDHMSTime _ANSI_ARGS_((int32 someTime, char *timeText));
+  static void	ComputeGOPFrames _ANSI_ARGS_((int whichGOP, int *firstFrame,
+  					      int *lastFrame, int numFrames));
+! static void	PrintEndStats _ANSI_ARGS_((int inputFrameBits, long totalBits));
+  static void	ProcessRefFrame _ANSI_ARGS_((MpegFrame *frame,
+  					      BitBucket *bb, int lastFrame,
+  					      char *outputFileName));
+--- 221,227 ----
+  static void	ComputeDHMSTime _ANSI_ARGS_((int32 someTime, char *timeText));
+  static void	ComputeGOPFrames _ANSI_ARGS_((int whichGOP, int *firstFrame,
+  					      int *lastFrame, int numFrames));
+! static void	PrintEndStats _ANSI_ARGS_((int inputFrameBits, int32 totalBits));
+  static void	ProcessRefFrame _ANSI_ARGS_((MpegFrame *frame,
+  					      BitBucket *bb, int lastFrame,
+  					      char *outputFileName));
+***************
+*** 306,312 ****
+      char    inputFileName[1024];
+      time_t  tempTimeStart, tempTimeEnd;
+      boolean firstFrameDone = FALSE;
+!     long numBits;
+      int32 bitstreamMode, res;
+  
+      if ( (whichGOP == -1) && (frameStart == -1) &&
+--- 306,312 ----
+      char    inputFileName[1024];
+      time_t  tempTimeStart, tempTimeEnd;
+      boolean firstFrameDone = FALSE;
+!     int numBits;
+      int32 bitstreamMode, res;
+  
+      if ( (whichGOP == -1) && (frameStart == -1) &&
+***************
+*** 1145,1151 ****
+  static void
+  PrintEndStats(inputFrameBits, totalBits)
+      int inputFrameBits;
+!     long totalBits;
+  {
+      FILE *fpointer;
+      register int i;
+--- 1145,1151 ----
+  static void
+  PrintEndStats(inputFrameBits, totalBits)
+      int inputFrameBits;
+!     int32 totalBits;
+  {
+      FILE *fpointer;
+      register int i;
+***************
+*** 1176,1183 ****
+  	totalCPU += ShowBFrameSummary(inputFrameBits, totalBits, fpointer);
+  	fprintf(fpointer, "---------------------------------------------\n");
+  	fprintf(fpointer, "Total Compression:  %3d:1     (%9.4f bpp)\n",
+! 		framesOutput*inputFrameBits/totalBits,(float)(
+! 		24.0*(double)(totalBits)/(double)(framesOutput*inputFrameBits)));
+  	if (diffTime > 0) {
+  	  fprintf(fpointer, "Total Frames Per Second:  %f (%ld mps)\n",
+  		  (float)framesOutput/(float)diffTime,
+--- 1176,1183 ----
+  	totalCPU += ShowBFrameSummary(inputFrameBits, totalBits, fpointer);
+  	fprintf(fpointer, "---------------------------------------------\n");
+  	fprintf(fpointer, "Total Compression:  %3d:1     (%9.4f bpp)\n",
+! 		framesOutput*inputFrameBits/totalBits,
+! 		24.0*(float)(totalBits)/(float)(framesOutput*inputFrameBits));
+  	if (diffTime > 0) {
+  	  fprintf(fpointer, "Total Frames Per Second:  %f (%ld mps)\n",
+  		  (float)framesOutput/(float)diffTime,
+***************
+*** 1193,1199 ****
+  		     (long)((float)framesOutput*(float)inputFrameBits/(256.0*24.0*totalCPU)));
+  	}
+  	fprintf(fpointer, "Total Output Bit Rate (%d fps):  %d bits/sec\n",
+! 		frameRateRounded, (int) (((long)frameRateRounded)*totalBits/framesOutput));
+  	fprintf(fpointer, "MPEG file created in :  %s\n", outputFileName);
+  	fprintf(fpointer, "\n\n");
+  
+--- 1193,1199 ----
+  		     (long)((float)framesOutput*(float)inputFrameBits/(256.0*24.0*totalCPU)));
+  	}
+  	fprintf(fpointer, "Total Output Bit Rate (%d fps):  %d bits/sec\n",
+! 		frameRateRounded, frameRateRounded*totalBits/framesOutput);
+  	fprintf(fpointer, "MPEG file created in :  %s\n", outputFileName);
+  	fprintf(fpointer, "\n\n");
+  
+Only in ../bmt1r2/mpeg_encode: mpeg_encode.1
+diff -c mpeg_encode/noparallel.c ../bmt1r2/mpeg_encode/noparallel.c
+*** mpeg_encode/noparallel.c	Mon Nov 13 14:06:53 1995
+--- ../bmt1r2/mpeg_encode/noparallel.c	Thu May 11 17:00:10 1995
+***************
+*** 74,80 ****
+--- 74,85 ----
+  #include "mtypes.h"
+  #include "parallel.h"
+  #include "frame.h"
++ #ifdef LINUX
+  #include <time.h>
++ #endif
++ #if defined(sco)
++ #include <time.h>
++ #endif
+  
+  
+  /*==================*
+***************
+*** 113,120 ****
+  
+  
+  void
+! SetParallelPerfect(val)
+! boolean val;
+  {
+      /* do nothing -- this may be called during non-parallel execution */
+  }
+--- 118,124 ----
+  
+  
+  void
+! SetParallelPerfect()
+  {
+      /* do nothing -- this may be called during non-parallel execution */
+  }
+diff -c mpeg_encode/opts.c ../bmt1r2/mpeg_encode/opts.c
+*** mpeg_encode/opts.c	Tue Nov 21 16:50:12 1995
+--- ../bmt1r2/mpeg_encode/opts.c	Tue Aug 15 11:34:09 1995
+***************
+*** 80,87 ****
+  double **L1, **L2, **Lambdas;
+  int LaplaceNum, LaplaceCnum;
+  boolean BSkipBlocks = TRUE;
+- boolean BC_on=FALSE;
+- FILE *BC_file;
+  
+  /*====================*
+   * Internal Prototypes*
+--- 80,85 ----
+***************
+*** 94,100 ****
+  void    SetupLaplace _ANSI_ARGS_((void));
+  void    CalcLambdas  _ANSI_ARGS_((void));
+  void    Mpost_UnQuantZigBlockLaplace _ANSI_ARGS_((FlatBlock in, Block out, int qscale, boolean iblock));
+- void    SetupBlockCounter _ANSI_ARGS_((char *fname));
+  
+  /* define this as it too much of a pain to find toupper on different arch'es */
+  #define ASCII_TOUPPER(c) ((c>='a') && (c<='z')) ? c-'a'+'A' : c
+--- 92,97 ----
+***************
+*** 175,183 ****
+    case 'D':
+      SetupLocalDCT(SkipSpacesTabs(charPtr+1));
+      break;
+-   case 'E':
+-     SetupBlockCounter(SkipSpacesTabs(charPtr+1));
+-     break;
+    case 'K':
+      SetupKillDimAreas(SkipSpacesTabs(charPtr+1));
+      break;
+--- 172,177 ----
+***************
+*** 523,538 ****
+      error += tmp*tmp;
+    }
+    return error;
+- }
+- 
+- 
+- void
+-   SetupBlockCounter(fname)
+- char *fname;
+- {
+-   if ((BC_file = fopen(fname,"w")) == NULL) {
+-     fprintf(stderr, "Could not open %s\nTUNE E ignored\n", fname);
+-   } else {
+-     BC_on = TRUE;
+-   }
+  }
+--- 517,520 ----
+diff -c mpeg_encode/param.c ../bmt1r2/mpeg_encode/param.c
+*** mpeg_encode/param.c	Mon Oct 02 15:25:45 1995
+--- ../bmt1r2/mpeg_encode/param.c	Wed Aug 16 15:21:25 1995
+***************
+*** 410,417 ****
+          charPtr = SkipSpacesTabs(&input[16]);
+          SetFileFormat(charPtr);
+          if ( (strncmp(charPtr,"YUV",3) == 0) || 
+- 	    (strncmp(charPtr,"SIGNED_YUV", 10) == 0) ||
+- 	    (strncmp(charPtr,"UNSIGNED_YUV", 12) == 0) ||
+              (strcmp(charPtr,"Y") == 0) ) {
+            yuvUsed = TRUE;
+          }
+--- 410,415 ----
+Only in ../bmt1r2/mpeg_encode: parseSchedule
+diff -c mpeg_encode/pframe.c ../bmt1r2/mpeg_encode/pframe.c
+*** mpeg_encode/pframe.c	Tue Nov 28 17:05:17 1995
+--- ../bmt1r2/mpeg_encode/pframe.c	Mon Aug 07 14:51:39 1995
+***************
+*** 41,47 ****
+   */
+  
+  /*  
+!  *  $Header$
+   *  $Log$
+   *  Revision 1.22  1995/08/07 21:51:23  smoot
+   *  fixed  LumMotionError call, simpler now with option type
+--- 41,47 ----
+   */
+  
+  /*  
+!  *  $Header$
+   *  $Log$
+   *  Revision 1.22  1995/08/07 21:51:23  smoot
+   *  fixed  LumMotionError call, simpler now with option type
+***************
+*** 362,373 ****
+  	numIBlocks++;
+  
+  	/* calculate forward dct's */
+! 	if (collect_quant && (collect_quant_detailed & 1)) fprintf(collect_quant_fp, "li\n");
+  	mp_fwd_dct_block2(current->y_blocks[y][x], dct[y][x]);
+  	mp_fwd_dct_block2(current->y_blocks[y][x+1], dct[y][x+1]);
+  	mp_fwd_dct_block2(current->y_blocks[y+1][x], dct[y+1][x]);
+  	mp_fwd_dct_block2(current->y_blocks[y+1][x+1], dct[y+1][x+1]);
+! 	if (collect_quant && (collect_quant_detailed & 1)) fprintf(collect_quant_fp, "ci\n");
+  	mp_fwd_dct_block2(current->cb_blocks[y>>1][x>>1], dctb[y>>1][x>>1]);
+  	mp_fwd_dct_block2(current->cr_blocks[y>>1][x>>1], dctr[y>>1][x>>1]);
+  
+--- 362,373 ----
+  	numIBlocks++;
+  
+  	/* calculate forward dct's */
+! 	if (collect_quant && (collect_quant_detailed & 1)) fprintf(collect_quant_fp, "l\n");
+  	mp_fwd_dct_block2(current->y_blocks[y][x], dct[y][x]);
+  	mp_fwd_dct_block2(current->y_blocks[y][x+1], dct[y][x+1]);
+  	mp_fwd_dct_block2(current->y_blocks[y+1][x], dct[y+1][x]);
+  	mp_fwd_dct_block2(current->y_blocks[y+1][x+1], dct[y+1][x+1]);
+! 	if (collect_quant && (collect_quant_detailed & 1)) fprintf(collect_quant_fp, "c\n");
+  	mp_fwd_dct_block2(current->cb_blocks[y>>1][x>>1], dctb[y>>1][x>>1]);
+  	mp_fwd_dct_block2(current->cr_blocks[y>>1][x>>1], dctr[y>>1][x>>1]);
+  
+diff -c mpeg_encode/rate.c ../bmt1r2/mpeg_encode/rate.c
+*** mpeg_encode/rate.c	Tue Nov 28 17:58:07 1995
+--- ../bmt1r2/mpeg_encode/rate.c	Wed Aug 16 11:15:41 1995
+***************
+*** 163,169 ****
+  
+  
+  /*  Output-related variables */
+- /* to log stuff use: #define RC_STATS_FILE */
+  #ifdef RC_STATS_FILE
+  static FILE *RC_FILE;
+  #endif
+--- 163,168 ----
+diff -c mpeg_encode/readframe.c ../bmt1r2/mpeg_encode/readframe.c
+*** mpeg_encode/readframe.c	Tue Nov 28 17:42:21 1995
+--- ../bmt1r2/mpeg_encode/readframe.c	Mon Aug 14 15:31:58 1995
+***************
+*** 32,42 ****
+   */
+  
+  /*  
+!  *  $Header$
+   *  $Log$
+-  *  Revision 1.28  1995/08/24 17:15:15  smoot
+-  *  phillips misspelling fixed
+-  *
+   *  Revision 1.27  1995/08/14 22:31:40  smoot
+   *  reads training info from PPms now (needed for piping reads)
+   *
+--- 32,39 ----
+   */
+  
+  /*  
+!  *  $Header$
+   *  $Log$
+   *  Revision 1.27  1995/08/14 22:31:40  smoot
+   *  reads training info from PPms now (needed for piping reads)
+   *
+***************
+*** 152,159 ****
+  
+  static int  fileType = BASE_FILE_TYPE;
+  struct YuvLine {
+! 	uint8	data[4096];
+! 	uint8	y[2048];
+  	int8	cr[1024];
+  	int8	cb[1024];
+  };
+--- 149,156 ----
+  
+  static int  fileType = BASE_FILE_TYPE;
+  struct YuvLine {
+! 	uint8	data[3072];
+! 	uint8	y[1024];
+  	int8	cr[1024];
+  	int8	cb[1024];
+  };
+***************
+*** 199,205 ****
+  static void DoKillDim _ANSI_ARGS_((MpegFrame *mf, int w, int h));
+  
+  #define safe_fread(ptr,sz,len,fileptr)                           \
+!     if ((safe_read_count=fread(ptr,sz,len,fileptr))!=len) {      \
+        fprintf(stderr,"Input file too small! (%s)\n",CurrFile);   \
+        exit(1);}                                                  \
+  
+--- 196,202 ----
+  static void DoKillDim _ANSI_ARGS_((MpegFrame *mf, int w, int h));
+  
+  #define safe_fread(ptr,sz,len,fileptr)                           \
+!     if ((safe_read_count=fread(ptr,sz,len,fileptr))!=sz*len) {   \
+        fprintf(stderr,"Input file too small! (%s)\n",CurrFile);   \
+        exit(1);}                                                  \
+  
+***************
+*** 286,325 ****
+        }
+  
+        /* replace every occurrence of '*' with fullFileName */
+!     convertPtr = conversion;
+!     commandPtr = command;
+!     while ( *convertPtr != '\0' ) {
+!       while ( (*convertPtr != '\0') && (*convertPtr != '*') ) {
+! 	*commandPtr = *convertPtr;
+! 	commandPtr++;
+! 	convertPtr++;
+!       }
+  
+!       if ( *convertPtr == '*' ) {
+! 	/* copy fullFileName */
+! 	charPtr = fullFileName;
+! 	while ( *charPtr != '\0' ) {
+! 	  *commandPtr = *charPtr;
+! 	  commandPtr++;
+! 	  charPtr++;
+! 	}
+  
+! 	convertPtr++;		/* go past '*' */
+        }
+!     }
+!     *commandPtr = '\0';
+!     
+!     if ( (ifp = popen(command, "r")) == NULL ) {
+!       fprintf(stderr, "ERROR:  Couldn't execute input conversion command:\n");
+!       fprintf(stderr, "\t%s\n", command);
+!       fprintf(stderr, "errno = %d\n", errno);
+!       if ( ioServer ) {
+! 	fprintf(stderr, "IO SERVER:  EXITING!!!\n");
+!       } else {
+! 	fprintf(stderr, "SLAVE EXITING!!!\n");
+        }
+-       exit(1);
+-     }
+      } else if (stdinUsed) {
+        ifp = stdin;
+      } else if ( (ifp = fopen(fullFileName, "rb")) == NULL ) {
+--- 283,322 ----
+        }
+  
+        /* replace every occurrence of '*' with fullFileName */
+!       convertPtr = conversion;
+!       commandPtr = command;
+!       while ( *convertPtr != '\0' ) {
+!         while ( (*convertPtr != '\0') && (*convertPtr != '*') ) {
+!           *commandPtr = *convertPtr;
+!           commandPtr++;
+!           convertPtr++;
+!         }
+  
+!         if ( *convertPtr == '*' ) {
+!           /* copy fullFileName */
+!           charPtr = fullFileName;
+!           while ( *charPtr != '\0' ) {
+!             *commandPtr = *charPtr;
+!             commandPtr++;
+!             charPtr++;
+!           }
+  
+!           convertPtr++;   /* go past '*' */
+!         }
+        }
+!       *commandPtr = '\0';
+! 
+!       if ( (ifp = popen(command, "r")) == NULL ) {
+!         fprintf(stderr, "ERROR:  Couldn't execute input conversion command:\n");
+!         fprintf(stderr, "\t%s\n", command);
+!         fprintf(stderr, "errno = %d\n", errno);
+!         if ( ioServer ) {
+!           fprintf(stderr, "IO SERVER:  EXITING!!!\n");
+!         } else {
+!           fprintf(stderr, "SLAVE EXITING!!!\n");
+!         }
+!         exit(1);
+        }
+      } else if (stdinUsed) {
+        ifp = stdin;
+      } else if ( (ifp = fopen(fullFileName, "rb")) == NULL ) {
+***************
+*** 327,375 ****
+                fullFileName);
+        exit(1);
+      }
+!     
+      switch(baseFormat) {
+      case YUV_FILE_TYPE:
+-     case SIGNED_YUV_FILE_TYPE:
+  
+!       /* Encoder YUV */
+!       if ((strncmp (yuvConversion, "EYUV", 4) == 0) ||
+! 	  (strncmp (yuvConversion, "UCB", 3) == 0) ) 
+          {
+! 	  ReadEYUV(framePtr, ifp, realWidth, realHeight);
+          }
+  
+!       /* Abekas-type (interlaced) YUV */
+!       else {
+! 	ReadAYUV(framePtr, ifp, realWidth, realHeight);
+!       }
+  
+!       break;
+      case Y_FILE_TYPE:
+!       ReadY(framePtr, ifp, realWidth, realHeight);
+!       break;
+      case PPM_FILE_TYPE:
+!       if ( ! ReadPPM(framePtr, ifp) ) {
+          fprintf(stderr, "Error reading PPM input file!!! (%s)\n", CurrFile);
+          exit(1);
+!       }
+!       PPMtoYUV(framePtr);
+!       break;
+      case PNM_FILE_TYPE:
+!       ReadPNM(ifp, framePtr);
+!       PNMtoYUV(framePtr);
+!       break;
+      case SUB4_FILE_TYPE:
+!       ReadSub4(framePtr, ifp, yuvWidth, yuvHeight);
+!       break;
+      case JPEG_FILE_TYPE:
+      case JMOVIE_FILE_TYPE:
+!       ReadJPEG(framePtr, ifp);
+!       break;
+      default:
+!       break;
+      }
+!     
+      if (! stdinUsed) {
+        if ( fileType == ANY_FILE_TYPE ) {
+  	int errorcode;
+--- 324,371 ----
+                fullFileName);
+        exit(1);
+      }
+! 
+      switch(baseFormat) {
+      case YUV_FILE_TYPE:
+  
+!         /* Encoder YUV */
+!         if ((strncmp (yuvConversion, "EYUV", 4) == 0) ||
+!             (strncmp (yuvConversion, "UCB", 3) == 0) ) 
+          {
+!             ReadEYUV(framePtr, ifp, realWidth, realHeight);
+          }
+  
+!         /* Abekas-type (interlaced) YUV */
+!         else {
+!             ReadAYUV(framePtr, ifp, realWidth, realHeight);
+!         }
+  
+!         break;
+      case Y_FILE_TYPE:
+!         ReadY(framePtr, ifp, realWidth, realHeight);
+!         break;
+      case PPM_FILE_TYPE:
+!         if ( ! ReadPPM(framePtr, ifp) ) {
+          fprintf(stderr, "Error reading PPM input file!!! (%s)\n", CurrFile);
+          exit(1);
+!         }
+!         PPMtoYUV(framePtr);
+!         break;
+      case PNM_FILE_TYPE:
+!         ReadPNM(ifp, framePtr);
+!         PNMtoYUV(framePtr);
+!         break;
+      case SUB4_FILE_TYPE:
+!         ReadSub4(framePtr, ifp, yuvWidth, yuvHeight);
+!         break;
+      case JPEG_FILE_TYPE:
+      case JMOVIE_FILE_TYPE:
+!         ReadJPEG(framePtr, ifp);
+!         break;
+      default:
+!         break;
+      }
+! 
+      if (! stdinUsed) {
+        if ( fileType == ANY_FILE_TYPE ) {
+  	int errorcode;
+***************
+*** 384,412 ****
+      if ( baseFormat == JMOVIE_FILE_TYPE ) {
+        remove(fullFileName);
+      }
+!     
+      if ( resizeFrame ) {
+        Frame_Resize(frame, &tempFrame, Fsize_x, Fsize_y, outputWidth, outputHeight);
+      }
+!     
+  #ifdef BLEAH
+!     time(&diskEndTime);
+!     
+!     readDiskTime += (diskEndTime-diskStartTime);
+!     
+!     fprintf(stdout, "cumulative disk read time:  %d seconds\n", readDiskTime);
+  #endif
+!     
+      if ( GammaCorrection ) {
+        DoGamma(frame, Fsize_x, Fsize_y);
+      }
+!     
+      if ( kill_dim ) {
+        DoKillDim(frame, Fsize_x, Fsize_y);
+      }
+!     
+      MotionSearchPreComputation(frame);
+!   }
+  
+  
+  /*===========================================================================*
+--- 380,408 ----
+      if ( baseFormat == JMOVIE_FILE_TYPE ) {
+        remove(fullFileName);
+      }
+! 
+      if ( resizeFrame ) {
+        Frame_Resize(frame, &tempFrame, Fsize_x, Fsize_y, outputWidth, outputHeight);
+      }
+! 
+  #ifdef BLEAH
+! time(&diskEndTime);
+! 
+! readDiskTime += (diskEndTime-diskStartTime);
+! 
+! fprintf(stdout, "cumulative disk read time:  %d seconds\n", readDiskTime);
+  #endif
+! 
+      if ( GammaCorrection ) {
+        DoGamma(frame, Fsize_x, Fsize_y);
+      }
+! 
+      if ( kill_dim ) {
+        DoKillDim(frame, Fsize_x, Fsize_y);
+      }
+! 
+      MotionSearchPreComputation(frame);
+! }
+  
+  
+  /*===========================================================================*
+***************
+*** 422,435 ****
+   *
+   *===========================================================================*/
+  void
+!   SetFileType(conversion)
+! char *conversion;
+  {
+!   if ( strcmp(conversion, "*") == 0 ) {
+!     fileType = BASE_FILE_TYPE;
+!   } else {
+!     fileType = ANY_FILE_TYPE;
+!   }
+  }
+  
+  
+--- 418,431 ----
+   *
+   *===========================================================================*/
+  void
+! SetFileType(conversion)
+!     char *conversion;
+  {
+!     if ( strcmp(conversion, "*") == 0 ) {
+! 	fileType = BASE_FILE_TYPE;
+!     } else {
+! 	fileType = ANY_FILE_TYPE;
+!     }
+  }
+  
+  
+***************
+*** 445,473 ****
+   *
+   *===========================================================================*/
+  void
+!   SetFileFormat(format)
+! char *format;
+  {
+!   if ( strcmp(format, "PPM") == 0 ) {
+!     baseFormat = PPM_FILE_TYPE;
+!   } else if (( strcmp(format, "YUV") == 0 ) || (strcmp(format, "UNSIGNED_YUV") == 0 )) {
+!     baseFormat = YUV_FILE_TYPE;
+!   } else if (strcmp(format, "SIGNED_YUV") == 0 ) {
+!     baseFormat = SIGNED_YUV_FILE_TYPE;
+!   } else if ( strcmp(format, "Y") == 0 ) {
+!     baseFormat = Y_FILE_TYPE;
+!   } else if ( strcmp(format, "PNM") == 0 ) {
+!     baseFormat = PNM_FILE_TYPE;
+!   } else if (( strcmp(format, "JPEG") == 0 ) || ( strcmp(format, "JPG") == 0 )) {
+!     baseFormat = JPEG_FILE_TYPE;
+!   } else if ( strcmp(format, "JMOVIE") == 0 ) {
+!     baseFormat = JMOVIE_FILE_TYPE;
+!   } else if ( strcmp(format, "SUB4") == 0 ) {
+!     baseFormat = SUB4_FILE_TYPE;
+!   } else {
+!     fprintf(stderr, "ERROR:  Invalid file format:  %s\n", format);
+!     exit(1);
+!   }
+  }
+  
+  
+--- 441,467 ----
+   *
+   *===========================================================================*/
+  void
+! SetFileFormat(format)
+!     char *format;
+  {
+!     if ( strcmp(format, "PPM") == 0 ) {
+! 	baseFormat = PPM_FILE_TYPE;
+!     } else if ( strcmp(format, "YUV") == 0 ) {
+! 	baseFormat = YUV_FILE_TYPE;
+!     } else if ( strcmp(format, "Y") == 0 ) {
+! 	baseFormat = Y_FILE_TYPE;
+!     } else if ( strcmp(format, "PNM") == 0 ) {
+! 	baseFormat = PNM_FILE_TYPE;
+!     } else if (( strcmp(format, "JPEG") == 0 ) || ( strcmp(format, "JPG") == 0 )) {
+! 	baseFormat = JPEG_FILE_TYPE;
+!     } else if ( strcmp(format, "JMOVIE") == 0 ) {
+! 	baseFormat = JMOVIE_FILE_TYPE;
+!     } else if ( strcmp(format, "SUB4") == 0 ) {
+! 	baseFormat = SUB4_FILE_TYPE;
+!     } else {
+! 	fprintf(stderr, "ERROR:  Invalid file format:  %s\n", format);
+! 	exit(1);
+!     }
+  }
+  
+  
+***************
+*** 483,521 ****
+   *
+   *===========================================================================*/
+  static void
+!   ReadPNM(fp, mf)
+! FILE *fp;
+! MpegFrame *mf;
+  {
+!   int x, y;
+!   xelval maxval;
+!   int format;
+  
+!   if (mf->rgb_data) {
+!     pnm_freearray(mf->rgb_data, Fsize_y);
+!   }
+!   mf->rgb_data = pnm_readpnm(fp, &x, &y, &maxval, &format);
+!   ERRCHK(mf, "pnm_readpnm");
+  
+!   if (format != PPM_FORMAT) {
+      if (maxval < 255) {
+!       pnm_promoteformat(mf->rgb_data, x, y, maxval, format, 255, PPM_FORMAT);
+!       maxval = 255;
+!     } else {
+!       pnm_promoteformat(mf->rgb_data, x, y, maxval, format, maxval, PPM_FORMAT);
+      }
+!   }
+!   if (maxval < 255) {
+!     pnm_promoteformat(mf->rgb_data, x, y, maxval, format, 255, format);
+!     maxval = 255;
+!   }
+!   /*
+!    * if this is the first frame read, set the global frame size
+!    */
+!   Fsize_Note(mf->id, x, y);
+  
+!   mf->rgb_maxval = maxval;
+!   mf->rgb_format = PPM_FORMAT;
+  }
+  
+  
+--- 477,515 ----
+   *
+   *===========================================================================*/
+  static void
+! ReadPNM(fp, mf)
+!     FILE *fp;
+!     MpegFrame *mf;
+  {
+!     int x, y;
+!     xelval maxval;
+!     int format;
+  
+!     if (mf->rgb_data) {
+! 	pnm_freearray(mf->rgb_data, Fsize_y);
+!     }
+!     mf->rgb_data = pnm_readpnm(fp, &x, &y, &maxval, &format);
+!     ERRCHK(mf, "pnm_readpnm");
+  
+!     if (format != PPM_FORMAT) {
+! 	if (maxval < 255) {
+! 	    pnm_promoteformat(mf->rgb_data, x, y, maxval, format, 255, PPM_FORMAT);
+! 	    maxval = 255;
+! 	} else {
+! 	    pnm_promoteformat(mf->rgb_data, x, y, maxval, format, maxval, PPM_FORMAT);
+! 	}
+!     }
+      if (maxval < 255) {
+! 	pnm_promoteformat(mf->rgb_data, x, y, maxval, format, 255, format);
+! 	maxval = 255;
+      }
+!     /*
+!      * if this is the first frame read, set the global frame size
+!      */
+!     Fsize_Note(mf->id, x, y);
+  
+!     mf->rgb_maxval = maxval;
+!     mf->rgb_format = PPM_FORMAT;
+  }
+  
+  
+***************
+*** 532,598 ****
+   *
+   *===========================================================================*/
+  FILE *
+!   ReadIOConvert(fileName)
+! char *fileName;
+  {
+!   FILE	*ifp;
+!   char	command[1024];
+!   char	fullFileName[1024];
+!   char *convertPtr, *commandPtr, *charPtr;
+  
+!   sprintf(fullFileName, "%s/%s", currentPath, fileName);
+  
+  #ifdef BLEAH
+!   if ( ! childProcess ) {
+!     fprintf(stdout, "+++++READING (IO CONVERT) Frame %d  (type %d):  %s\n", frame->id,
+! 	    frame->type, fullFileName); }
+  #endif
+  
+!   if ( strcmp(ioConversion, "*") == 0 ) {
+!     char buff[1024];
+!     ifp = fopen(fullFileName, "rb");
+!     sprintf(buff,"fopen \"%s\"",fullFileName);
+!     ERRCHK(ifp, buff);
+!     return ifp;
+!   }
+! 
+!   /* replace every occurrence of '*' with fullFileName */
+!   convertPtr = ioConversion;
+!   commandPtr = command;
+!   while ( *convertPtr != '\0' ) {
+!     while ( (*convertPtr != '\0') && (*convertPtr != '*') ) {
+!       *commandPtr = *convertPtr;
+!       commandPtr++;
+!       convertPtr++;
+      }
+  
+!     if ( *convertPtr == '*' ) {
+!       /* copy fullFileName */
+!       charPtr = fullFileName;
+!       while ( *charPtr != '\0' ) {
+! 	*commandPtr = *charPtr;
+! 	commandPtr++;
+! 	charPtr++;
+!       }
+  
+!       convertPtr++;		/* go past '*' */
+      }
+!   }
+!   *commandPtr = '\0';
+  
+!   if ( (ifp = popen(command, "r")) == NULL ) {
+!     fprintf(stderr, "ERROR:  Couldn't execute input conversion command:\n");
+!     fprintf(stderr, "\t%s\n", command);
+!     fprintf(stderr, "errno = %d\n", errno);
+!     if ( ioServer ) {
+!       fprintf(stderr, "IO SERVER:  EXITING!!!\n");
+!     } else {
+!       fprintf(stderr, "SLAVE EXITING!!!\n");
+      }
+-     exit(1);
+-   }
+  
+!   return ifp;
+  }
+  
+  
+--- 526,592 ----
+   *
+   *===========================================================================*/
+  FILE *
+! ReadIOConvert(fileName)
+!     char *fileName;
+  {
+!     FILE	*ifp;
+!     char	command[1024];
+!     char	fullFileName[1024];
+!     char *convertPtr, *commandPtr, *charPtr;
+  
+!     sprintf(fullFileName, "%s/%s", currentPath, fileName);
+  
+  #ifdef BLEAH
+!     if ( ! childProcess ) {
+! 	fprintf(stdout, "+++++READING (IO CONVERT) Frame %d  (type %d):  %s\n", frame->id,
+! 		frame->type, fullFileName); }
+  #endif
+  
+!     if ( strcmp(ioConversion, "*") == 0 ) {
+!       char buff[1024];
+!       ifp = fopen(fullFileName, "rb");
+!       sprintf(buff,"fopen \"%s\"",fullFileName);
+!       ERRCHK(ifp, buff);
+!       return ifp;
+      }
+  
+!     /* replace every occurrence of '*' with fullFileName */
+!     convertPtr = ioConversion;
+!     commandPtr = command;
+!     while ( *convertPtr != '\0' ) {
+! 	while ( (*convertPtr != '\0') && (*convertPtr != '*') ) {
+! 	    *commandPtr = *convertPtr;
+! 	    commandPtr++;
+! 	    convertPtr++;
+! 	}
+  
+! 	if ( *convertPtr == '*' ) {
+! 	    /* copy fullFileName */
+! 	    charPtr = fullFileName;
+! 	    while ( *charPtr != '\0' ) {
+! 		*commandPtr = *charPtr;
+! 		commandPtr++;
+! 		charPtr++;
+! 	    }
+! 
+! 	    convertPtr++;   /* go past '*' */
+! 	}
+      }
+!     *commandPtr = '\0';
+  
+!     if ( (ifp = popen(command, "r")) == NULL ) {
+! 	fprintf(stderr, "ERROR:  Couldn't execute input conversion command:\n");
+! 	fprintf(stderr, "\t%s\n", command);
+! 	fprintf(stderr, "errno = %d\n", errno);
+! 	if ( ioServer ) {
+! 	    fprintf(stderr, "IO SERVER:  EXITING!!!\n");
+! 	} else {
+! 	    fprintf(stderr, "SLAVE EXITING!!!\n");
+! 	}
+! 	exit(1);
+      }
+  
+!     return ifp;
+  }
+  
+  
+***************
+*** 609,717 ****
+   *
+   *===========================================================================*/
+  static boolean
+!   ReadPPM(mf, fpointer)
+! MpegFrame *mf;
+! FILE *fpointer;
+  {
+!   char    inputBuffer[71];
+!   char    string[71];
+!   char    *inputLine;
+!   int	    height = 0, width = 0, maxVal=255;
+!   uint8   junk[4096];
+!   register int y;
+!   int	    state;
+!   int     safe_read_count;
+  
+!   state = PPM_READ_STATE_MAGIC;
+  
+!   while ( state != PPM_READ_STATE_DONE ) {
+!     if ( fgets(inputBuffer, 71, fpointer) == NULL ) {
+!       return FALSE;
+!     }
+  	
+!     inputLine = inputBuffer;
+   
+!     if ( inputLine[0] == '#' ) {
+!       continue;
+!     }
+  
+!     if ( inputLine[strlen(inputLine)-1] != '\n' ) {
+!       return FALSE;
+!     }
+  
+!     switch(state) {
+!     case PPM_READ_STATE_MAGIC:
+!       if ( (inputLine = ScanNextString(inputLine, string)) == NULL ) {
+! 	return FALSE;
+!       }
+  
+!       if ( strcmp(string, "P6") != 0 ) {
+! 	return FALSE;
+!       }
+!       state = PPM_READ_STATE_WIDTH;
+!       /* no break */
+!     case PPM_READ_STATE_WIDTH:
+!       if ( (inputLine = ScanNextString(inputLine, string)) == NULL ) {
+! 	if ( inputLine == inputBuffer ) {
+! 	  return FALSE;
+! 	} else {
+! 	  break;
+! 	}
+!       }
+  
+!       width = atoi(string);
+  
+!       state = PPM_READ_STATE_HEIGHT;
+  
+!       /* no break */
+!     case PPM_READ_STATE_HEIGHT:
+!       if ( (inputLine = ScanNextString(inputLine, string)) == NULL ) {
+! 	if ( inputLine == inputBuffer ) {
+! 	  return FALSE;
+! 	} else {
+! 	  break;
+! 	}
+!       }
+  
+!       height = atoi(string);
+  
+!       state = PPM_READ_STATE_MAXVAL;
+  
+!       /* no break */
+!     case PPM_READ_STATE_MAXVAL:
+!       if ( (inputLine = ScanNextString(inputLine, string)) == NULL ) {
+! 	if ( inputLine == inputBuffer ) {
+! 	  return FALSE;
+! 	} else {
+! 	  break;
+! 	}
+!       }
+  
+!       maxVal = atoi(string);
+  
+!       state = PPM_READ_STATE_DONE;
+!       break;
+!     } /* end of switch */
+!   }
+  
+!   Fsize_Note(mf->id, width, height);
+  
+!   mf->rgb_maxval = maxVal;
+  
+!   Frame_AllocPPM(mf);
+  
+!   for ( y = 0; y < Fsize_y; y++ ) {
+!     safe_fread(mf->ppm_data[y], sizeof(char), 3*Fsize_x, fpointer);
+  
+!     /* read the leftover stuff on the right side */
+!     safe_fread(junk, sizeof(char), 3*(width-Fsize_x), fpointer);
+!   }
+  
+!   /* read the leftover stuff to prevent broken pipe */
+!   for ( y=Fsize_y; y<height; ++y ) {
+!     safe_fread(junk, sizeof(char), 3*Fsize_x, fpointer);
+!   }
+!   return TRUE;
+  }
+  
+  
+--- 603,711 ----
+   *
+   *===========================================================================*/
+  static boolean
+! ReadPPM(mf, fpointer)
+!     MpegFrame *mf;
+!     FILE *fpointer;
+  {
+!     char    inputBuffer[71];
+!     char    string[71];
+!     char    *inputLine;
+!     int	    height = 0, width = 0, maxVal=255;
+!     uint8   junk[4096];
+!     register int y;
+!     int	    state;
+!     int     safe_read_count;
+  
+!     state = PPM_READ_STATE_MAGIC;
+  
+!     while ( state != PPM_READ_STATE_DONE ) {
+! 	if ( fgets(inputBuffer, 71, fpointer) == NULL ) {
+! 	    return FALSE;
+! 	}
+  	
+!         inputLine = inputBuffer;
+   
+! 	if ( inputLine[0] == '#' ) {
+! 	    continue;
+! 	}
+  
+! 	if ( inputLine[strlen(inputLine)-1] != '\n' ) {
+! 	    return FALSE;
+! 	}
+  
+! 	switch(state) {
+! 	    case PPM_READ_STATE_MAGIC:
+! 	        if ( (inputLine = ScanNextString(inputLine, string)) == NULL ) {
+! 		    return FALSE;
+! 		}
+  
+! 		if ( strcmp(string, "P6") != 0 ) {
+! 		    return FALSE;
+! 		}
+! 		state = PPM_READ_STATE_WIDTH;
+! 		/* no break */
+! 	    case PPM_READ_STATE_WIDTH:
+! 	        if ( (inputLine = ScanNextString(inputLine, string)) == NULL ) {
+! 		    if ( inputLine == inputBuffer ) {
+! 		        return FALSE;
+! 		    } else {
+! 		        break;
+! 		    }
+! 		}
+  
+! 		width = atoi(string);
+  
+! 		state = PPM_READ_STATE_HEIGHT;
+  
+! 		/* no break */
+! 	    case PPM_READ_STATE_HEIGHT:
+! 	        if ( (inputLine = ScanNextString(inputLine, string)) == NULL ) {
+! 		    if ( inputLine == inputBuffer ) {
+! 		        return FALSE;
+! 		    } else {
+! 		        break;
+! 		    }
+! 		}
+  
+! 		height = atoi(string);
+  
+! 		state = PPM_READ_STATE_MAXVAL;
+  
+! 		/* no break */
+! 	    case PPM_READ_STATE_MAXVAL:
+! 	        if ( (inputLine = ScanNextString(inputLine, string)) == NULL ) {
+! 		    if ( inputLine == inputBuffer ) {
+! 		        return FALSE;
+! 		    } else {
+! 		        break;
+! 		    }
+! 		}
+  
+! 		maxVal = atoi(string);
+  
+! 		state = PPM_READ_STATE_DONE;
+! 		break;
+! 	} /* end of switch */
+!     }
+  
+!     Fsize_Note(mf->id, width, height);
+  
+!     mf->rgb_maxval = maxVal;
+  
+!     Frame_AllocPPM(mf);
+  
+!     for ( y = 0; y < Fsize_y; y++ ) {
+! 	safe_fread(mf->ppm_data[y], sizeof(char), 3*Fsize_x, fpointer);
+  
+! 	/* read the leftover stuff on the right side */
+! 	safe_fread(junk, sizeof(char), 3*(width-Fsize_x), fpointer);
+!     }
+  
+!     /* read the leftover stuff to prevent broken pipe */
+!     for ( y=Fsize_y; y<height; ++y ) {
+!       safe_fread(junk, sizeof(char), 3*Fsize_x, fpointer);
+!     }
+!     return TRUE;
+  }
+  
+  
+***************
+*** 727,784 ****
+   *
+   *===========================================================================*/
+  static void
+!   ReadEYUV(mf, fpointer, width, height)
+! MpegFrame *mf;
+! FILE *fpointer;
+! int width;
+! int height;
+  {
+!   register int y;
+!   uint8   junk[4096];
+!   int     safe_read_count;
+  
+!   Fsize_Note(mf->id, width, height);
+  
+!   Frame_AllocYCC(mf);
+  
+!   for (y = 0; y < Fsize_y; y++) { /* Y */
+!     safe_fread(mf->orig_y[y], 1, Fsize_x, fpointer);
+  
+!     /* read the leftover stuff on the right side */
+!     if ( width != Fsize_x ) {
+!       safe_fread(junk, 1, width-Fsize_x, fpointer);
+      }
+-   }
+  
+!   /* read the leftover stuff on the bottom */
+!   for (y = Fsize_y; y < height; y++) {
+!     safe_fread(junk, 1, width, fpointer);
+!   }
+  
+!   for (y = 0; y < (Fsize_y >> 1); y++) { /* U */
+!     safe_fread(mf->orig_cb[y], 1, Fsize_x >> 1, fpointer);
+  
+!     /* read the leftover stuff on the right side */
+!     if ( width != Fsize_x ) {
+!       safe_fread(junk, 1, (width-Fsize_x)>>1, fpointer);
+      }
+-   }
+  
+!   /* read the leftover stuff on the bottom */
+!   for (y = (Fsize_y >> 1); y < (height >> 1); y++) {
+!     safe_fread(junk, 1, width>>1, fpointer);
+!   }
+  
+!   for (y = 0; y < (Fsize_y >> 1); y++) { /* V */
+!     safe_fread(mf->orig_cr[y], 1, Fsize_x >> 1, fpointer);
+  
+!     /* read the leftover stuff on the right side */
+!     if ( width != Fsize_x ) {
+!       safe_fread(junk, 1, (width-Fsize_x)>>1, fpointer);
+      }
+-   }
+  
+!   /* ignore leftover stuff on the bottom */
+  }
+  
+  /*===========================================================================*
+--- 721,778 ----
+   *
+   *===========================================================================*/
+  static void
+! ReadEYUV(mf, fpointer, width, height)
+!     MpegFrame *mf;
+!     FILE *fpointer;
+!     int width;
+!     int height;
+  {
+!     register int y;
+!     uint8   junk[4096];
+!     int     safe_read_count;
+  
+!     Fsize_Note(mf->id, width, height);
+  
+!     Frame_AllocYCC(mf);
+  
+!     for (y = 0; y < Fsize_y; y++) {			/* Y */
+! 	safe_fread(mf->orig_y[y], 1, Fsize_x, fpointer);
+  
+! 	/* read the leftover stuff on the right side */
+! 	if ( width != Fsize_x ) {
+! 	    safe_fread(junk, 1, width-Fsize_x, fpointer);
+! 	}
+      }
+  
+!     /* read the leftover stuff on the bottom */
+!     for (y = Fsize_y; y < height; y++) {
+! 	safe_fread(junk, 1, width, fpointer);
+!     }
+  
+!     for (y = 0; y < (Fsize_y >> 1); y++) {			/* U */
+! 	safe_fread(mf->orig_cb[y], 1, Fsize_x >> 1, fpointer);
+  
+! 	/* read the leftover stuff on the right side */
+! 	if ( width != Fsize_x ) {
+! 	    safe_fread(junk, 1, (width-Fsize_x)>>1, fpointer);
+! 	}
+      }
+  
+!     /* read the leftover stuff on the bottom */
+!     for (y = (Fsize_y >> 1); y < (height >> 1); y++) {
+! 	safe_fread(junk, 1, width>>1, fpointer);
+!     }
+  
+!     for (y = 0; y < (Fsize_y >> 1); y++) {			/* V */
+! 	safe_fread(mf->orig_cr[y], 1, Fsize_x >> 1, fpointer);
+  
+! 	/* read the leftover stuff on the right side */
+! 	if ( width != Fsize_x ) {
+! 	    safe_fread(junk, 1, (width-Fsize_x)>>1, fpointer);
+! 	}
+      }
+  
+!     /* ignore leftover stuff on the bottom */
+  }
+  
+  /*===========================================================================*
+***************
+*** 793,847 ****
+   *
+   *===========================================================================*/
+  static void
+!   ReadAYUV(mf, fpointer, width, height)
+! MpegFrame *mf;
+! FILE *fpointer;
+! int width;
+! int height;
+  {
+!   register int x, y;
+!   struct  YuvLine line1, line2;
+!   uint8   junk[4096];
+!   int8    *cbptr, *crptr;
+!   int     safe_read_count;
+  
+!   Fsize_Note(mf->id, width, height);
+  
+!   Frame_AllocYCC(mf);
+  
+!   for (y = 0;  y < Fsize_y;  y += 2) {
+!     SeparateLine(fpointer, &line1, width);
+!     SeparateLine(fpointer, &line2, width);
+  
+!     /* Copy the Y values for each line to the frame */
+!     for (x = 0; x < Fsize_x; x++) {
+!       mf->orig_y[y][x]   = line1.y[x];
+!       mf->orig_y[y+1][x] = line2.y[x];
+!     }
+  
+!     cbptr = &(mf->orig_cb[y>>1][0]);
+!     crptr = &(mf->orig_cr[y>>1][0]);
+  
+!     /* One U and one V for each two pixels horizontal as well */
+!     /* Toss the second line of Cr/Cb info, averaging was worse,
+!        so just subsample */
+!     if (baseFormat != SIGNED_YUV_FILE_TYPE) {
+!       for (x = 0;  x < (Fsize_x >> 1);  x++) {
+! 	cbptr[x] =  line1.cb[x];
+! 	crptr[x] =  line1.cr[x];
+!       }
+!     } else {
+!       for (x = 0;  x < (Fsize_x >> 1);  x++) {
+! 	cbptr[x] =  line1.cb[x]+128;
+! 	crptr[x] =  line1.cr[x]+128;
+!       }
+      }
+-   }
+  
+!   /* read the leftover stuff on the bottom */
+!   for (y = Fsize_y; y < height; y++) {
+!     safe_fread(junk, 1, width<<1, fpointer);
+!   }
+  
+  }
+  
+--- 787,835 ----
+   *
+   *===========================================================================*/
+  static void
+! ReadAYUV(mf, fpointer, width, height)
+!     MpegFrame *mf;
+!     FILE *fpointer;
+!     int width;
+!     int height;
+  {
+!     register int x, y;
+!     struct  YuvLine line1, line2;
+!     uint8   junk[4096];
+!     int8    *cbptr, *crptr;
+!     int     safe_read_count;
+  
+!     Fsize_Note(mf->id, width, height);
+  
+!     Frame_AllocYCC(mf);
+  
+!     for (y = 0; y < Fsize_y; y += 2) {
+! 	SeparateLine(fpointer, &line1, width);
+! 	SeparateLine(fpointer, &line2, width);
+  
+! 	/* Copy the Y values for each line to the frame */
+! 	for (x = 0; x < Fsize_x; x++) {
+! 	    mf->orig_y[y][x]   = line1.y[x];
+! 	    mf->orig_y[y+1][x] = line2.y[x];
+! 	}
+  
+! 	cbptr = &(mf->orig_cb[y>>1][0]);
+! 	crptr = &(mf->orig_cr[y>>1][0]);
+  
+! 	/* One U and one V for each two pixels horizontal as well */
+! 	/* Toss the second line of Cr/Cb info, averaging was worse,
+! 	   so just subsample */
+! 	for (x = 0; x < (Fsize_x >> 1); x ++) {
+! 	    cbptr[x] =  line1.cb[x];
+! 	    crptr[x] =  line1.cr[x];
+! 
+! 	}
+      }
+  
+!     /* read the leftover stuff on the bottom */
+!     for (y = Fsize_y; y < height; y++) {
+! 	safe_fread(junk, 1, width<<1, fpointer);
+!     }
+  
+  }
+  
+***************
+*** 857,933 ****
+   *
+   *===========================================================================*/
+  static void
+!   SeparateLine(fpointer, lineptr, width)
+! FILE *fpointer;
+! struct YuvLine *lineptr;
+! int width;
+  {
+!   uint8   junk[4096];
+!   int8    *crptr, *cbptr;
+!   uint8   *yptr;
+!   int     num, length;
+!   int     safe_read_count;
+!   
+!   
+!   /* Sets the deinterlacing pattern */
+!   
+!   /* shorthand for UYVY */
+!   if (strncmp(yuvConversion, "ABEKAS", 6) == 0) {
+!     strcpy(yuvConversion, "UYVY");
+!     
+!     /* shorthand for YUYV */
+!   } else if ((strncmp(yuvConversion, "PHILLIPS", 8) == 0) || 
+! 	     (strncmp(yuvConversion, "PHILIPS", 7) == 0)) {
+!     strcpy(yuvConversion, "YUYV");
+!   }
+!   
+!   length = strlen (yuvConversion);
+!   
+!   if ((length % 2) != 0) {
+!     fprintf (stderr, "ERROR : YUV_FORMAT must represent two pixels, hence must be even in length.\n");
+!     exit(1);
+!   }
+  
+-   /* each line in 4:2:2 chroma format takes 2X bytes to represent X pixels.
+-    * each line in 4:4:4 chroma format takes 3X bytes to represent X pixels.
+-    * Therefore, half of the length of the YUV_FORMAT represents 1 pixel.
+-    */
+-   safe_fread(lineptr->data, 1, Fsize_x*(length>>1), fpointer);
+  
+!   /* read the leftover stuff on the right side */
+!   if ( width != Fsize_x ) {
+!     safe_fread(junk, 1, (width-Fsize_x)*(length>>1), fpointer);
+!   }
+  
+!   crptr = &(lineptr->cr[0]);
+!   cbptr = &(lineptr->cb[0]);
+!   yptr = &(lineptr->y[0]);
+  
+!   for (num = 0; num < (Fsize_x*(length>>1)); num++) {
+!     switch (yuvConversion[num % length]) {
+!     case 'U':
+!     case 'u':
+!       *(cbptr++) = (int8) (lineptr->data[num]);
+!       break;
+!     case 'V':
+!     case 'v':
+!       *(crptr++) = (int8) (lineptr->data[num]);
+!       break;
+!     case 'Y':
+!     case 'y':
+!       *(yptr++) = (lineptr->data[num]);
+!       break;
+!     default:
+!       fprintf(stderr, "ERROR: YUV_FORMAT must be one of the following:\n");
+!       fprintf(stderr, "       ABEKAS\n");
+!       fprintf(stderr, "       EYUV\n");
+!       fprintf(stderr, "       PHILIPS\n");
+!       fprintf(stderr, "       UCB\n");
+!       fprintf(stderr, "       or any even-length string consisting of the letters U, V, and Y.\n");
+!       exit(1);
+      }
+  	
+!   }
+  
+  }
+  
+--- 845,920 ----
+   *
+   *===========================================================================*/
+  static void
+! SeparateLine(fpointer, lineptr, width)
+!     FILE *fpointer;
+!     struct YuvLine *lineptr;
+!     int width;
+  {
+!     uint8   junk[4096];
+!     int8    *crptr, *cbptr;
+!     uint8   *yptr;
+!     int     num, length;
+!     int     safe_read_count;
+  
+  
+!     /* Sets the deinterlacing pattern */
+  
+! 	/* shorthand for UYVY */
+!     if (strncmp(yuvConversion, "ABEKAS", 6) == 0) {
+! 	strcpy(yuvConversion, "UYVY");
+  
+! 	/* shorthand for YUYV */
+!     } else if (strncmp(yuvConversion, "PHILLIPS", 8) == 0) {
+! 	strcpy(yuvConversion, "YUYV");
+      }
++ 
++     length = strlen (yuvConversion);
++ 
++     if ((length % 2) != 0) {
++ 	fprintf (stderr, "ERROR : YUV_FORMAT must represent two pixels, hence must be even in length.\n");
++ 	exit(1);
++     }
++ 
++     /* each line in 4:2:2 chroma format takes 2X bytes to represent X pixels.
++      * each line in 4:4:4 chroma format takes 3X bytes to represent X pixels.
++      * Therefore, half of the length of the YUV_FORMAT represents 1 pixel.
++      */
++     safe_fread(lineptr->data, 1, Fsize_x*(length>>1), fpointer);
++ 
++     /* read the leftover stuff on the right side */
++     if ( width != Fsize_x ) {
++ 	safe_fread(junk, 1, (width-Fsize_x)*(length>>1), fpointer);
++     }
++ 
++     crptr = &(lineptr->cr[0]);
++     cbptr = &(lineptr->cb[0]);
++     yptr = &(lineptr->y[0]);
++ 
++     for (num = 0; num < (Fsize_x*(length>>1)); num++) {
++ 	switch (yuvConversion[num % length]) {
++ 	case 'U':
++ 	case 'u':
++ 	    *(cbptr++) = (lineptr->data[num]);
++ 	    break;
++ 	case 'V':
++ 	case 'v':
++ 	    *(crptr++) = (lineptr->data[num]);
++ 	    break;
++ 	case 'Y':
++ 	case 'y':
++ 	    *(yptr++) = (lineptr->data[num]);
++ 	    break;
++ 	default:
++             fprintf(stderr, "ERROR: YUV_FORMAT must be one of the following:\n");
++             fprintf(stderr, "       ABEKAS\n");
++             fprintf(stderr, "       EYUV\n");
++             fprintf(stderr, "       PHILLIPS\n");
++             fprintf(stderr, "       UCB\n");
++ 	    fprintf(stderr, "       or any even-length string consisting of the letters U, V, and Y.\n");
++             exit(1);
++         }
+  	
+!     }
+  
+  }
+  
+***************
+*** 944,981 ****
+   *
+   *===========================================================================*/
+  static void
+!   ReadY(mf, fpointer, width, height)
+! MpegFrame *mf;
+! FILE *fpointer;
+! int width;
+! int height;
+  {
+!   register int y;
+!   uint8   junk[4096];
+!   int     safe_read_count;
+  
+!   Fsize_Note(mf->id, width, height);
+  
+!   Frame_AllocYCC(mf);
+  
+!   for (y = 0; y < Fsize_y; y++) { /* Y */
+!     safe_fread(mf->orig_y[y], 1, Fsize_x, fpointer);
+  
+!     /* read the leftover stuff on the right side */
+!     if ( width != Fsize_x ) {
+!       safe_fread(junk, 1, width-Fsize_x, fpointer);
+      }
+-   }
+  
+!   /* read the leftover stuff on the bottom */
+!   for (y = Fsize_y; y < height; y++) {
+!     safe_fread(junk, 1, width, fpointer);
+!   }
+      
+!   for (y = 0 ; y < (Fsize_y >> 1); y++) {
+!     memset(mf->orig_cb[y], 128, (Fsize_x>>1));
+!     memset(mf->orig_cr[y], 128, (Fsize_x>>1));
+!   }
+  }
+  
+  
+--- 931,968 ----
+   *
+   *===========================================================================*/
+  static void
+! ReadY(mf, fpointer, width, height)
+!     MpegFrame *mf;
+!     FILE *fpointer;
+!     int width;
+!     int height;
+  {
+!     register int y;
+!     uint8   junk[4096];
+!     int     safe_read_count;
+  
+!     Fsize_Note(mf->id, width, height);
+  
+!     Frame_AllocYCC(mf);
+  
+!     for (y = 0; y < Fsize_y; y++) {			/* Y */
+! 	safe_fread(mf->orig_y[y], 1, Fsize_x, fpointer);
+  
+! 	/* read the leftover stuff on the right side */
+! 	if ( width != Fsize_x ) {
+! 	    safe_fread(junk, 1, width-Fsize_x, fpointer);
+! 	}
+      }
+  
+!     /* read the leftover stuff on the bottom */
+!     for (y = Fsize_y; y < height; y++) {
+! 	safe_fread(junk, 1, width, fpointer);
+!     }
+      
+!     for (y = 0 ; y < (Fsize_y >> 1); y++) {
+!       memset(mf->orig_cb[y], 128, (Fsize_x>>1));
+!       memset(mf->orig_cr[y], 128, (Fsize_x>>1));
+!     }
+  }
+  
+  
+***************
+*** 991,1040 ****
+   *
+   *===========================================================================*/
+  static void
+!   ReadSub4(mf, fpointer, width, height)
+! MpegFrame *mf;
+! FILE *fpointer;
+! int width;
+! int height;
+  {
+!   register int y;
+!   register int x;
+!   uint8   buffer[1024];
+!   int     safe_read_count;
+  
+!   Fsize_Note(mf->id, width, height);
+  
+!   Frame_AllocYCC(mf);
+  
+!   for (y = 0; y < (height>>1); y++) { /* Y */
+!     safe_fread(buffer, 1, width>>1, fpointer);
+!     for ( x = 0; x < (width>>1); x++ ) {
+!       mf->orig_y[2*y][2*x] = buffer[x];
+!       mf->orig_y[2*y][2*x+1] = buffer[x];
+!       mf->orig_y[2*y+1][2*x] = buffer[x];
+!       mf->orig_y[2*y+1][2*x+1] = buffer[x];
+      }
+-   }
+  
+!   for (y = 0; y < (height >> 2); y++) {	/* U */
+!     safe_fread(buffer, 1, width>>2, fpointer);
+!     for ( x = 0; x < (width>>2); x++ ) {
+!       mf->orig_cb[2*y][2*x] = buffer[x];
+!       mf->orig_cb[2*y][2*x+1] = buffer[x];
+!       mf->orig_cb[2*y+1][2*x] = buffer[x];
+!       mf->orig_cb[2*y+1][2*x+1] = buffer[x];
+      }
+-   }
+  
+!   for (y = 0; y < (height >> 2); y++) {	/* V */
+!     safe_fread(buffer, 1, width>>2, fpointer);
+!     for ( x = 0; x < (width>>2); x++ ) {
+!       mf->orig_cr[2*y][2*x] = buffer[x];
+!       mf->orig_cr[2*y][2*x+1] = buffer[x];
+!       mf->orig_cr[2*y+1][2*x] = buffer[x];
+!       mf->orig_cr[2*y+1][2*x+1] = buffer[x];
+      }
+-   }
+  }
+  
+  
+--- 978,1027 ----
+   *
+   *===========================================================================*/
+  static void
+! ReadSub4(mf, fpointer, width, height)
+!     MpegFrame *mf;
+!     FILE *fpointer;
+!     int width;
+!     int height;
+  {
+!     register int y;
+!     register int x;
+!     uint8   buffer[1024];
+!     int     safe_read_count;
+  
+!     Fsize_Note(mf->id, width, height);
+  
+!     Frame_AllocYCC(mf);
+  
+!     for (y = 0; y < (height>>1); y++) {			/* Y */
+! 	safe_fread(buffer, 1, width>>1, fpointer);
+! 	for ( x = 0; x < (width>>1); x++ ) {
+! 	    mf->orig_y[2*y][2*x] = buffer[x];
+! 	    mf->orig_y[2*y][2*x+1] = buffer[x];
+! 	    mf->orig_y[2*y+1][2*x] = buffer[x];
+! 	    mf->orig_y[2*y+1][2*x+1] = buffer[x];
+! 	}
+      }
+  
+!     for (y = 0; y < (height >> 2); y++) {			/* U */
+! 	safe_fread(buffer, 1, width>>2, fpointer);
+! 	for ( x = 0; x < (width>>2); x++ ) {
+! 	    mf->orig_cb[2*y][2*x] = buffer[x];
+! 	    mf->orig_cb[2*y][2*x+1] = buffer[x];
+! 	    mf->orig_cb[2*y+1][2*x] = buffer[x];
+! 	    mf->orig_cb[2*y+1][2*x+1] = buffer[x];
+! 	}
+      }
+  
+!     for (y = 0; y < (height >> 2); y++) {			/* V */
+! 	safe_fread(buffer, 1, width>>2, fpointer);
+! 	for ( x = 0; x < (width>>2); x++ ) {
+! 	    mf->orig_cr[2*y][2*x] = buffer[x];
+! 	    mf->orig_cr[2*y][2*x+1] = buffer[x];
+! 	    mf->orig_cr[2*y+1][2*x] = buffer[x];
+! 	    mf->orig_cr[2*y+1][2*x+1] = buffer[x];
+! 	}
+      }
+  }
+  
+  
+***************
+*** 1056,1083 ****
+   *
+   *===========================================================================*/
+  static char *
+!   ScanNextString(inputLine, string)
+! char *inputLine;
+! char *string;
+  {
+!   /* skip whitespace */
+!   while ( isspace(*inputLine) && (*inputLine != '\n') ) {
+!     inputLine++;
+!   }
+  
+!   if ( *inputLine == '\n' ) {
+!     return NULL;
+!   }
+  
+!   while ( (! isspace(*inputLine)) && (*inputLine != '\n') ) {
+!     *string = *inputLine;
+!     string++;
+!     inputLine++;
+!   }
+  
+!   *string = '\0';
+  
+!   return inputLine;
+  }
+  
+  /*===========================================================================*
+--- 1043,1070 ----
+   *
+   *===========================================================================*/
+  static char *
+! ScanNextString(inputLine, string)
+!     char *inputLine;
+!     char *string;
+  {
+!     /* skip whitespace */
+!     while ( isspace(*inputLine) && (*inputLine != '\n') ) {
+!         inputLine++;
+!     }
+  
+!     if ( *inputLine == '\n' ) {
+!         return NULL;
+!     }
+  
+!     while ( (! isspace(*inputLine)) && (*inputLine != '\n') ) {
+!         *string = *inputLine;
+! 	string++;
+! 	inputLine++;
+!     }
+  
+!     *string = '\0';
+  
+!     return inputLine;
+  }
+  
+  /*===========================================================================*
+***************
+*** 1092,1098 ****
+   *
+   *===========================================================================*/
+  static void
+!   DoGamma(mf, w, h)
+  MpegFrame *mf;
+  int w,h;
+  {
+--- 1079,1085 ----
+   *
+   *===========================================================================*/
+  static void
+! DoGamma(mf, w, h)
+  MpegFrame *mf;
+  int w,h;
+  {
+***************
+*** 1106,1113 ****
+      init_done=TRUE;
+    }
+  
+!   for (i=0; i< h; i++) {	/* For each line */
+!     for (j=0; j<w; j++) {	/* For each Y value */
+        mf->orig_y[i][j] = GammaVal[mf->orig_y[i][j]];
+      }}
+  }
+--- 1093,1100 ----
+      init_done=TRUE;
+    }
+  
+!   for (i=0; i< h; i++) {  /* For each line */
+!     for (j=0; j<w; j++) { /* For each Y value */
+        mf->orig_y[i][j] = GammaVal[mf->orig_y[i][j]];
+      }}
+  }
+***************
+*** 1126,1153 ****
+   * SIDE EFFECTS:    Changes Y values:
+   *
+   *  Output    |                 /
+!  |                /
+!  |               /
+!  |              !
+!  |             /
+!  |            !
+!  |           /
+!  |          -
+!  |        /
+!  |      --
+!  |     /
+!  |   --
+!  | /
+!  ------------------------
+!  ^ kill_dim_break
+!  ^kill_dim_end
+!  kill_dim_slope gives the slope (y = kill_dim_slope * x +0)
+!  from 0 to kill_dim_break                      
+   *
+   *===========================================================================*/
+  
+  static void
+!   DoKillDim(mf, w, h)
+  MpegFrame *mf;
+  int w,h;
+  {
+--- 1113,1140 ----
+   * SIDE EFFECTS:    Changes Y values:
+   *
+   *  Output    |                 /
+!               |                /
+!               |               /
+!               |              !
+!               |             /
+!               |            !
+!               |           /
+!               |          -
+!               |        /
+!               |      --
+!               |     /
+!               |   --
+!               | /
+!               ------------------------
+!                         ^ kill_dim_break
+!                              ^kill_dim_end
+!               kill_dim_slope gives the slope (y = kill_dim_slope * x +0)
+!               from 0 to kill_dim_break                      
+   *
+   *===========================================================================*/
+  
+  static void
+! DoKillDim(mf, w, h)
+  MpegFrame *mf;
+  int w,h;
+  {
+***************
+*** 1166,1172 ****
+          mapper[i] = (char) i;
+        } else if (i >= kill_dim_break) {
+          mapper[i] = (char) (slope*i + intercept);
+!       } else {			/* i <= kill_dim_break */
+          mapper[i] = (char) floor(i*kill_dim_slope + 0.49999);
+        }
+      }
+--- 1153,1159 ----
+          mapper[i] = (char) i;
+        } else if (i >= kill_dim_break) {
+          mapper[i] = (char) (slope*i + intercept);
+!       } else { /* i <= kill_dim_break */
+          mapper[i] = (char) floor(i*kill_dim_slope + 0.49999);
+        }
+      }
+***************
+*** 1173,1179 ****
+      init_done = TRUE;
+    }
+  
+!   for (i=0;  i < h;  i++) {	/* For each line */
+      for (j=0;   j < w;   j++) { /* For each Y value */
+        mf->orig_y[i][j] = mapper[mf->orig_y[i][j]];
+      }}
+--- 1160,1166 ----
+      init_done = TRUE;
+    }
+  
+!   for (i=0;  i < h;  i++) {  /* For each line */
+      for (j=0;   j < w;   j++) { /* For each Y value */
+        mf->orig_y[i][j] = mapper[mf->orig_y[i][j]];
+      }}
+diff -c mpeg_encode/rgbtoycc.c ../bmt1r2/mpeg_encode/rgbtoycc.c
+*** mpeg_encode/rgbtoycc.c	Tue Nov 28 18:04:07 1995
+--- ../bmt1r2/mpeg_encode/rgbtoycc.c	Mon Aug 14 15:32:24 1995
+***************
+*** 31,37 ****
+   */
+  
+  /*  
+!  *  $Header$
+   *  $Log$
+   *  Revision 1.5  1995/08/14 22:32:16  smoot
+   *  added better error message
+--- 31,37 ----
+   */
+  
+  /*  
+!  *  $Header$
+   *  $Log$
+   *  Revision 1.5  1995/08/14 22:32:16  smoot
+   *  added better error message
+***************
+*** 118,133 ****
+  
+      /*
+       * okay.  Now, convert everything into YCrCb space. (the specific
+!      * numbers come from the JPEG source, jccolor.c) Their comment is the following:
+       *
+!      * YCbCr is defined per CCIR 601-1, except that Cb and Cr are
+!      * normalized to the range 0..MAXJSAMPLE rather than -0.5 .. 0.5.
+!      * The conversion equations to be implemented are therefore
+!      *	Y  =  0.29900 * R + 0.58700 * G + 0.11400 * B
+!      *	Cb = -0.16874 * R - 0.33126 * G + 0.50000 * B  + MAXJSAMPLE/2
+!      *	Cr =  0.50000 * R - 0.41869 * G - 0.08131 * B  + MAXJSAMPLE/2
+!      * (These numbers are derived from TIFF 6.0 section 21, dated 3-June-92.)
+!      *
+       */
+  
+  /* ydivisor should be a FLOAT, shouldn't it?!?! */
+--- 118,129 ----
+  
+      /*
+       * okay.  Now, convert everything into YCrCb space. (the specific
+!      * numbers come from the JPEG source, jccolor.c) The conversion
+!      * equations to be implemented are therefore
+       *
+!      * Y  =  0.29900 * R + 0.58700 * G + 0.11400 * B
+!      * Cb = -0.16874 * R - 0.33126 * G + 0.50000 * B
+!      * Cr =  0.50000 * R - 0.41869 * G - 0.08131 * B
+       */
+  
+  /* ydivisor should be a FLOAT, shouldn't it?!?! */
+***************
+*** 143,149 ****
+  	     x < Fsize_x;
+  	     x += 2, dy0 += 2, dy1 += 2, dcr++,
+  	     dcb++, src0 += 2, src1 += 2) {
+! #ifndef BYtheBOOK
+  	    *dy0 = (mult299[PPM_GETR(*src0)] +
+  		    mult587[PPM_GETG(*src0)] +
+  		    mult114[PPM_GETB(*src0)]) / ydivisor;
+--- 139,145 ----
+  	     x < Fsize_x;
+  	     x += 2, dy0 += 2, dy1 += 2, dcr++,
+  	     dcb++, src0 += 2, src1 += 2) {
+! 
+  	    *dy0 = (mult299[PPM_GETR(*src0)] +
+  		    mult587[PPM_GETG(*src0)] +
+  		    mult114[PPM_GETB(*src0)]) / ydivisor;
+***************
+*** 185,221 ****
+  		     mult5[PPM_GETR(src1[1])] +
+  		     mult41869[PPM_GETG(src1[1])] +
+  		     mult08131[PPM_GETB(src1[1])]) / cdivisor) + 128;
+- #else
+- 	    /* A by-the-book version of (from ITU-R BT.470-2 System B, G and SMPTE 170M )*/
+- 	    {
+- 	      double L, CBsum, CRsum;
+- 	      L = .587048*PPM_GETG(*src0) + .298943*PPM_GETR(*src0) + .114009*PPM_GETB(*src0);
+- 	      CRsum = 0.713604*(PPM_GETR(*src0)-L);
+- 	      CBsum = 0.563884*(PPM_GETB(*src0)-L);
+- 	      *dy0 = L;
+- 	      L = .587048*PPM_GETG(*src1) + .298943*PPM_GETR(*src1) + .114009*PPM_GETB(*src1);
+- 	      CRsum += 0.713604*(PPM_GETR(*src1)-L);
+- 	      CBsum += 0.563884*(PPM_GETB(*src1)-L);
+- 	      *dy1 = L;
+  
+- 	      L = .587048*PPM_GETG(src0[1]) + .298943*PPM_GETR(src0[1]) + .114009*PPM_GETB(src0[1]);
+- 	      CRsum += 0.713604*(PPM_GETR(src0[1])-L);
+- 	      CBsum += 0.563884*(PPM_GETB(src0[1])-L);
+- 	      dy0[1] = L;
+- 
+- 	      L = .587048*PPM_GETG(src1[1]) + .298943*PPM_GETR(src1[1]) + .114009*PPM_GETB(src1[1]);
+- 	      CRsum += 0.713604*(PPM_GETR(src1[1])-L);
+- 	      CBsum += 0.563884*(PPM_GETB(src1[1])-L);
+- 	      dy1[1] = L;
+- 
+- 	      *dcr = CRsum/4+128;
+- 	      *dcb = CBsum/4+128;
+- 	    }
+- #endif
+  	    /* if your floating point is faster than your loads, you
+  	     * might consider this:
+  	     */
+! #ifdef FLOAT_RGBYUV
+  	    *dy0 = (PPM_GETR(*src0) * 0.29900 +
+  		    PPM_GETG(*src0) * 0.58700 +
+  		    PPM_GETB(*src0) * 0.11400) / ydivisor;
+--- 181,191 ----
+  		     mult5[PPM_GETR(src1[1])] +
+  		     mult41869[PPM_GETG(src1[1])] +
+  		     mult08131[PPM_GETB(src1[1])]) / cdivisor) + 128;
+  
+  	    /* if your floating point is faster than your loads, you
+  	     * might consider this:
+  	     */
+! #ifdef BLEAH
+  	    *dy0 = (PPM_GETR(*src0) * 0.29900 +
+  		    PPM_GETG(*src0) * 0.58700 +
+  		    PPM_GETB(*src0) * 0.11400) / ydivisor;
+Common subdirectories: mpeg_encode/tst and ../bmt1r2/mpeg_encode/tst
+diff -c convert/Makefile ../bmt1r2/convert/Makefile
+*** convert/Makefile	Wed Sep 06 13:57:57 1995
+--- ../bmt1r2/convert/Makefile	Mon May 01 16:08:28 1995
+***************
+*** 48,54 ****
+  TARGETS = ppmtoeyuv eyuvtoppm eyuvtojpeg $(VID_SRC) jmovie2jpeg mpeg_demux 
+  
+  # change this to be your include directory for header files
+! INCLUDE = -I/n/picasso/project/mm/xvideo/include -I/n/vid6/cmt-3.0/compat/parallax
+  
+  all: $(TARGETS)
+  
+--- 48,54 ----
+  TARGETS = ppmtoeyuv eyuvtoppm eyuvtojpeg $(VID_SRC) jmovie2jpeg mpeg_demux 
+  
+  # change this to be your include directory for header files
+! INCLUDE = -I/n/picasso/project/mm/xvideo/include
+  
+  all: $(TARGETS)
+  
+***************
+*** 65,71 ****
+  	$(CC) -lXvid -lX11 $(INCLUDE) -o vidtoppm vidtoppm.c 
+  
+  vidtojpeg: vidtojpeg.c
+! 	$(CC) -L/n/vid7/local/parallax.1.0b2/packages/X11_sun4_1.0beta2/lib/ -lXvid -lX11 $(INCLUDE) -o vidtojpeg vidtojpeg.c 
+  
+  vidtoeyuv: vidtoeyuv.c
+  	$(CC) -lXvid -lX11 $(INCLUDE) -o vidtoeyuv vidtoeyuv.c
+--- 65,71 ----
+  	$(CC) -lXvid -lX11 $(INCLUDE) -o vidtoppm vidtoppm.c 
+  
+  vidtojpeg: vidtojpeg.c
+! 	$(CC) -lXvid -lX11 $(INCLUDE) -o vidtojpeg vidtojpeg.c
+  
+  vidtoeyuv: vidtoeyuv.c
+  	$(CC) -lXvid -lX11 $(INCLUDE) -o vidtoeyuv vidtoeyuv.c
+diff -c convert/mpeg_demux.c ../bmt1r2/convert/mpeg_demux.c
+*** convert/mpeg_demux.c	Mon Nov 06 18:00:10 1995
+--- ../bmt1r2/convert/mpeg_demux.c	Mon May 01 16:07:58 1995
+***************
+*** 287,295 ****
+        if (errorCode != 0)
+           break;
+       }
+-    { unsigned int foo=0x000001b7;
+-      fwrite(&foo, 1, 4, videoOutputStream);
+-    }
+     fprintf(stderr, "%d system headers, %d packs, %d packets\n",
+             numSystemHeaders, numPacks, numPackets);
+     fprintf(stderr, "%d audio packets, %d video packets, %d padding packets\n",
+--- 287,292 ----
+Common subdirectories: convert/mtv and ../bmt1r2/convert/mtv
+diff -c convert/ppmtoeyuv.c ../bmt1r2/convert/ppmtoeyuv.c
+*** convert/ppmtoeyuv.c	Thu Aug 24 11:21:48 1995
+--- ../bmt1r2/convert/ppmtoeyuv.c	Thu Jan 19 19:25:37 1995
+***************
+*** 100,109 ****
+      if ( height == -1 )
+  	return FALSE;
+  
+-     if (height % 2 == 1) {
+-       height -= 1;
+-     }
+- 
+      maxVal = ReadNextInteger(fpointer);
+      if ( maxVal == -1 )
+  	return FALSE;
+--- 100,105 ----
