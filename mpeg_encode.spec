@@ -6,7 +6,10 @@ Release:	1
 License:	BSD
 Group:		Applications/Graphics
 Source0:	ftp://mm-ftp.cs.berkeley.edu/pub/multimedia/mpeg/encode/%{name}-%{version}-src.tar.gz
-Patch0:		ftp://mm-ftp.cs.berkeley.edu/pub/multimedia/mpeg/encode/encode.patch
+Patch0:		mpeg_encode-strerror.patch
+Patch1:		mpeg_encode-install.patch
+Patch2:		mpeg_encode-link_jpeg.patch
+#Patch0:		ftp://mm-ftp.cs.berkeley.edu/pub/multimedia/mpeg/encode/encode.patch
 URL:		http://bmrc.berkeley.edu/frame/research/mpeg/mpeg_encode.html
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -30,19 +33,18 @@ sugeruj± by zaczynaæ od przyk³adowego pliku examples/template.param i
 modyfikowaæ go. Patrz tak¿e examples/default.param.
 
 %prep
-%setup -q -n %{name}-%{version}
-%patch -p1
+%setup -q -n %{name}
+%patch0 -p1
+%patch1 -p1
+#%patch2 -p1
 
 %build
-./configure
 %{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-%{__make} install prefix=$RPM_BUILD_ROOT/%{_prefix}
+%{__make} install DESTDIR=$RPM_BUILD_ROOT
 
-##gzip -9 docs/users-guide.ps
-##tar cvf - examples | gzip >examples.tar.gz
 
 %clean
 if [ -d $RPM_BUILD_ROOT/%{prefix} ] ; then rm -rf $RPM_BUILD_ROOT/%{prefix}; fi
@@ -51,4 +53,4 @@ if [ -d $RPM_BUILD_ROOT/%{prefix} ] ; then rm -rf $RPM_BUILD_ROOT/%{prefix}; fi
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/*
 %{_mandir}/*
-##%{prefix}/doc/*
+%doc %{_docdir}
