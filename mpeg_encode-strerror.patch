@@ -1,0 +1,17 @@
+diff -urN mpeg_encode.orig/libpnmrw.c mpeg_encode/libpnmrw.c
+--- mpeg_encode.orig/libpnmrw.c	Thu Aug 17 00:24:26 1995
++++ mpeg_encode/libpnmrw.c	Thu Oct 31 22:42:27 2002
+@@ -126,11 +126,11 @@
+   pm_perror( reason )
+ char* reason;
+ {
+-  extern char* sys_errlist[];
+   extern int errno;
+   char* e;
+ 
+-  e = sys_errlist[errno];
++  e = strerror(errno);
++  
+ 
+   if ( reason != 0 && reason[0] != '\0' )
+     (void) fprintf( stderr, "%s: %s - %s\n", progname, reason, e );

@@ -1,0 +1,32 @@
+diff -urN mpeg_encode.orig/Makefile mpeg_encode/Makefile
+--- mpeg_encode.orig/Makefile	Thu Aug 17 00:16:56 1995
++++ mpeg_encode/Makefile	Thu Oct 31 22:54:57 2002
+@@ -33,6 +33,11 @@
+ ################################################################
+ PROFLAG =
+ 
++PREFIX=$(DESTDIR)/usr
++DATADIR=$(PREFIX)/share
++BINDIR=$(PREFIX)/bin
++MANDIR=$(DATADIR)/man
++
+ ##############
+ # JPEG STUFF #
+ ##############
+@@ -217,6 +222,16 @@
+ jpeg/libjpeg.a:
+ 	(cd jpeg; $(MAKE) libjpeg.a)
+ 
++install:
++	install -d $(DATADIR)/doc/mpeg_encode
++	install -d $(DATADIR)/doc/mpeg_encode/examples
++	install -d $(BINDIR)
++	install -d $(MANDIR)/man1
++	install mpeg_encode $(BINDIR)
++	install docs/mpeg_encode.1 $(MANDIR)/man1
++	install docs/EXTENSIONS   docs/param-summary  docs/users-guide.ps docs/INPUT.FORMAT  docs/parallel.param  docs/template.param $(DATADIR)/doc/mpeg_encode/
++	install examples/* $(DATADIR)/doc/mpeg_encode/examples
++	
+ #
+ # Perl is necessary if you want to modify the Huffman RLE encoding table.
+ #

@@ -1,0 +1,24 @@
+diff -urN mpeg_encode.orig/Makefile mpeg_encode/Makefile
+--- mpeg_encode.orig/Makefile	Thu Oct 31 23:03:57 2002
++++ mpeg_encode/Makefile	Thu Oct 31 23:04:29 2002
+@@ -41,9 +41,9 @@
+ ##############
+ # JPEG STUFF #
+ ##############
+-JPEG_LIB = jpeg/libjpeg.a
++JPEG_LIB = -ljpeg
+ JPEG_DIR = -Ijpeg
+-JPEG_LIB_DIR = -Ljpeg
++JPEG_LIB_DIR = 
+ MP_JPEG_OBJS = jpeg.o
+ MP_JPEG_SRCS = jpeg.c
+ 
+@@ -207,7 +207,7 @@
+ # BINARIES #
+ ############
+ 
+-mpeg_encode: $(MP_ALL_OBJS) $(JPEG_LIB)
++mpeg_encode: $(MP_ALL_OBJS) 
+ 	$(PURIFY) $(CC) $(CFLAGS) -o $@ $(MP_ALL_OBJS) $(LIBDIRS) $(LIBS)
+ 	strip mpeg_encode
+ 
