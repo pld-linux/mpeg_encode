@@ -7,9 +7,10 @@ License:	BSD
 Group:		Applications/Graphics
 Source0:	ftp://mm-ftp.cs.berkeley.edu/pub/multimedia/mpeg/encode/%{name}-%{version}-src.tar.gz
 # Source0-md5:	ff125fb82118efc7c852f0d26d5552c6
-Patch0:		mpeg_encode-strerror.patch
-Patch1:		mpeg_encode-install.patch
-Patch2:		mpeg_encode-link_jpeg.patch
+Patch0:		%{name}-strerror.patch
+Patch1:		%{name}-install.patch
+Patch2:		%{name}-errno.patch
+Patch3:		%{name}-link_jpeg.patch
 #Patch0:		ftp://mm-ftp.cs.berkeley.edu/pub/multimedia/mpeg/encode/encode.patch
 URL:		http://bmrc.berkeley.edu/frame/research/mpeg/mpeg_encode.html
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -34,24 +35,30 @@ sugeruj± by zaczynaæ od przyk³adowego pliku examples/template.param i
 modyfikowaæ go. Patrz tak¿e examples/default.param.
 
 %prep
-%setup -q -n %{name}
-%patch0 -p1
-%patch1 -p1
-#%patch2 -p1
+%setup -q -c
+%patch0 -p0
+%patch1 -p0
+%patch2 -p0
+# needs some libjpeg API update (from 5 to 6b)
+#%patch3 -p0
 
 %build
-%{__make}
+%{__make} -C mpeg_encode \
+	CC="%{__cc}" \
+	DEBUGFLAG="%{rpmcflags}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
-%{__make} install DESTDIR=$RPM_BUILD_ROOT
 
+%{__make} -C mpeg_encode install \
+	DESTDIR=$RPM_BUILD_ROOT
 
 %clean
-if [ -d $RPM_BUILD_ROOT/%{prefix} ] ; then rm -rf $RPM_BUILD_ROOT/%{prefix}; fi
+rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
+%doc ANNOUNCE COPYRIGHT mpeg_encode/{BUGS,CHANGES,NOTES,README,TODO,examples}
+%doc mpeg_encode/docs/{EXTENSIONS,*param*,users-guide.ps,INPUT.FORMAT}
 %attr(755,root,root) %{_bindir}/*
-%{_mandir}/*
-%doc %{_docdir}
+%{_mandir}/man1/*
