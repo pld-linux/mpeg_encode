@@ -1,0 +1,18 @@
+--- mpeg_encode/libpnmrw.c.orig	Tue Jul  1 13:45:06 2003
++++ mpeg_encode/libpnmrw.c	Tue Jul  1 13:46:39 2003
+@@ -27,6 +27,7 @@
+ /* #define MSDOS */
+ #endif
+ 
++#include <errno.h>
+ #include <stdio.h>
+ #include "libpnmrw.h"
+ 
+@@ -126,7 +127,6 @@
+   pm_perror( reason )
+ char* reason;
+ {
+-  extern int errno;
+   char* e;
+ 
+   e = strerror(errno);
