@@ -1,5 +1,5 @@
 Summary:	Berkeley MPEG-1 Video Encoder
-Summary(pl):	Koder obrazu MPEG-1 z Berkeley
+Summary(pl.UTF-8):   Koder obrazu MPEG-1 z Berkeley
 Name:		mpeg_encode
 Version:	1.5b
 Release:	1
@@ -25,14 +25,14 @@ done when reading this file. We suggest you start with the sample
 parameter file examples/template.param and modify it. See also
 examples/default.param.
 
-%description -l pl
-Ten koder akceptuje dowolny format wej¶ciowy dla którego dostarczysz
-skrypt konwertuj±cy ramki na PPM, YUV, JPEG lub JMOVIE. Obróbka pliku
-wej¶ciowego opisana jest w pliku doc/INPUT.FORMAT. Opcje kontroluj±ce
-obróbkê pliku wej¶ciowego i parametry kompresji s± w pliku parametrów.
-Przy czytaniu tego pliku obs³uga b³êdów jest niewielka. Autorzy
-sugeruj± by zaczynaæ od przyk³adowego pliku examples/template.param i
-modyfikowaæ go. Patrz tak¿e examples/default.param.
+%description -l pl.UTF-8
+Ten koder akceptuje dowolny format wejÅ›ciowy dla ktÃ³rego dostarczysz
+skrypt konwertujÄ…cy ramki na PPM, YUV, JPEG lub JMOVIE. ObrÃ³bka pliku
+wejÅ›ciowego opisana jest w pliku doc/INPUT.FORMAT. Opcje kontrolujÄ…ce
+obrÃ³bkÄ™ pliku wejÅ›ciowego i parametry kompresji sÄ… w pliku parametrÃ³w.
+Przy czytaniu tego pliku obsÅ‚uga bÅ‚Ä™dÃ³w jest niewielka. Autorzy
+sugerujÄ… by zaczynaÄ‡ od przykÅ‚adowego pliku examples/template.param i
+modyfikowaÄ‡ go. Patrz takÅ¼e examples/default.param.
 
 %prep
 %setup -q -c
