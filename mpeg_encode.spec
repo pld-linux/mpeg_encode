@@ -1,5 +1,5 @@
 Summary:	Berkeley MPEG-1 Video Encoder
-Summary(pl.UTF-8):   Koder obrazu MPEG-1 z Berkeley
+Summary(pl.UTF-8):	Koder obrazu MPEG-1 z Berkeley
 Name:		mpeg_encode
 Version:	1.5b
 Release:	1
