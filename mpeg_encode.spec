@@ -36,9 +36,9 @@ modyfikować go. Patrz także examples/default.param.
 
 %prep
 %setup -q -c
-%patch0 -p0
-%patch1 -p0
-%patch2 -p0
+%patch -P0 -p0
+%patch -P1 -p0
+%patch -P2 -p0
 # needs some libjpeg API update (from 5 to 6b)
 #%patch3 -p0
 
