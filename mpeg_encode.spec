@@ -40,7 +40,7 @@ modyfikować go. Patrz także examples/default.param.
 %patch -P1 -p0
 %patch -P2 -p0
 # needs some libjpeg API update (from 5 to 6b)
-#%patch3 -p0
+#%%patch3 -p0
 
 %build
 %{__make} -C mpeg_encode \
